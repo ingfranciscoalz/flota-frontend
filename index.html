@@ -12,741 +12,594 @@
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg:        #0a0a0a;
-      --surface:   #141414;
-      --surface2:  #1e1e1e;
-      --border:    #2a2a2a;
-      --accent:    #e8ff47;
-      --accent2:   #ff6b35;
-      --text:      #f0f0f0;
-      --muted:     #666;
-      --danger:    #ff4545;
-      --ok:        #47ff8a;
-      --negro:     #c8c8c8;
-      --blanco:    #ffffff;
+      --bg:#0a0a0a; --surface:#141414; --surface2:#1e1e1e; --border:#2a2a2a;
+      --accent:#e8ff47; --accent2:#ff6b35; --text:#f0f0f0; --muted:#666;
+      --danger:#ff4545; --ok:#47ff8a; --warn:#ffb347;
     }
+    *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+    body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100dvh;overflow-x:hidden}
 
-    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+    .header{padding:52px 20px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;background:linear-gradient(to bottom,var(--bg) 80%,transparent)}
+    .header h1{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;letter-spacing:-0.5px}
+    .header h1 span{color:var(--accent)}
+    .sync-btn{width:38px;height:38px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+    .sync-btn.spinning{animation:spin 1s linear infinite}
+    @keyframes spin{to{transform:rotate(360deg)}}
 
-    body {
-      font-family: 'DM Sans', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100dvh;
-      overflow-x: hidden;
-    }
+    .page{display:none;padding:0 20px 100px}
+    .page.active{display:block}
 
-    /* ── HEADER ── */
-    .header {
-      padding: 52px 20px 16px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: linear-gradient(to bottom, var(--bg) 80%, transparent);
-    }
-    .header h1 {
-      font-family: 'Syne', sans-serif;
-      font-size: 28px;
-      font-weight: 800;
-      letter-spacing: -0.5px;
-    }
-    .header h1 span { color: var(--accent); }
-    .sync-btn {
-      width: 38px; height: 38px;
-      border-radius: 50%;
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      color: var(--text);
-      font-size: 16px;
-      cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      transition: transform 0.3s;
-    }
-    .sync-btn.spinning { animation: spin 1s linear infinite; }
-    @keyframes spin { to { transform: rotate(360deg); } }
+    .card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:12px}
+    .card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
+    .auto-tag{font-family:'Syne',sans-serif;font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;padding:4px 10px;border-radius:6px}
+    .tag-negro{background:#222;color:#c8c8c8;border:1px solid #444}
+    .tag-blanco{background:#f5f5f5;color:#111}
 
-    /* ── NAV TABS ── */
-    .nav {
-      display: flex;
-      gap: 6px;
-      padding: 0 20px 16px;
-      overflow-x: auto;
-      scrollbar-width: none;
-    }
-    .nav::-webkit-scrollbar { display: none; }
-    .nav-btn {
-      flex-shrink: 0;
-      padding: 8px 16px;
-      border-radius: 20px;
-      border: 1px solid var(--border);
-      background: transparent;
-      color: var(--muted);
-      font-family: 'DM Sans', sans-serif;
-      font-size: 13px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.2s;
-    }
-    .nav-btn.active {
-      background: var(--accent);
-      color: #000;
-      border-color: var(--accent);
-      font-weight: 700;
-    }
+    .metric-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    .metric{background:var(--surface2);border-radius:10px;padding:12px}
+    .metric-label{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-bottom:4px;font-family:'DM Mono',monospace}
+    .metric-value{font-family:'DM Mono',monospace;font-size:15px;font-weight:500;color:var(--accent)}
 
-    /* ── PAGES ── */
-    .page { display: none; padding: 0 20px 100px; }
-    .page.active { display: block; }
+    /* Ganancias */
+    .gan-row{display:flex;gap:10px;margin-bottom:10px}
+    .gan-card{flex:1;background:var(--surface2);border-radius:12px;padding:14px;text-align:center}
+    .gan-label{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);font-family:'DM Mono',monospace;margin-bottom:6px}
+    .gan-value{font-family:'DM Mono',monospace;font-size:16px;font-weight:500;color:var(--ok)}
+    .gan-total{background:linear-gradient(135deg,#0d1f0d,#0a0a0a);border:1px solid #1a3a1a;border-radius:12px;padding:16px;display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
+    .gan-total-label{font-size:12px;color:var(--muted);font-family:'DM Mono',monospace}
+    .gan-total-value{font-family:'DM Mono',monospace;font-size:20px;font-weight:500;color:var(--ok)}
 
-    /* ── CARDS ── */
-    .card {
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 20px;
-      margin-bottom: 12px;
-    }
-    .card-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 16px;
-    }
-    .auto-tag {
-      font-family: 'Syne', sans-serif;
-      font-size: 11px;
-      font-weight: 800;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      padding: 4px 10px;
-      border-radius: 6px;
-    }
-    .tag-negro  { background: #222; color: var(--negro); border: 1px solid #444; }
-    .tag-blanco { background: #f5f5f5; color: #111; }
+    /* Deudas */
+    .deuda-section{margin-top:14px}
+    .deuda-chofer{margin-bottom:10px}
+    .deuda-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+    .deuda-nombre{font-size:13px;font-weight:600}
+    .deuda-count{font-family:'DM Mono',monospace;font-size:11px;padding:2px 8px;border-radius:5px;background:#2b0d0d;color:var(--danger)}
+    .deuda-count.ok{background:#0d2b18;color:var(--ok)}
+    .dias-grid{display:flex;flex-wrap:wrap;gap:5px}
+    .dia-chip{font-family:'DM Mono',monospace;font-size:11px;padding:4px 8px;border-radius:6px;background:#2b0d0d;color:var(--danger);border:1px solid #3a1010}
+    .dia-chip.franco{background:#1a1a00;color:var(--warn);border-color:#3a3a00}
 
-    .metric-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-    .metric {
-      background: var(--surface2);
-      border-radius: 10px;
-      padding: 12px;
-    }
-    .metric-label {
-      font-size: 10px;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      color: var(--muted);
-      margin-bottom: 4px;
-      font-family: 'DM Mono', monospace;
-    }
-    .metric-value {
-      font-family: 'DM Mono', monospace;
-      font-size: 15px;
-      font-weight: 500;
-      color: var(--accent);
-    }
+    /* Mantenimiento */
+    .mant-list{margin-top:14px;display:flex;flex-direction:column;gap:8px}
+    .mant-item{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--surface2);border-radius:10px;cursor:pointer;transition:opacity 0.15s}
+    .mant-item:active{opacity:0.7}
+    .mant-nombre{font-size:13px;font-weight:500}
+    .mant-faltan{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);margin-top:2px}
+    .badge{font-size:10px;font-weight:700;padding:3px 8px;border-radius:5px;text-transform:uppercase;letter-spacing:0.5px}
+    .badge-ok{background:#0d2b18;color:var(--ok)}
+    .badge-cambiar{background:#2b0d0d;color:var(--danger)}
 
-    /* ── MANTENIMIENTO ── */
-    .mant-list { margin-top: 14px; display: flex; flex-direction: column; gap: 8px; }
-    .mant-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 10px 12px;
-      background: var(--surface2);
-      border-radius: 10px;
-    }
-    .mant-nombre { font-size: 13px; font-weight: 500; }
-    .mant-faltan { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); }
-    .badge {
-      font-size: 10px;
-      font-weight: 700;
-      padding: 3px 8px;
-      border-radius: 5px;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
-    }
-    .badge-ok      { background: #0d2b18; color: var(--ok); }
-    .badge-cambiar { background: #2b0d0d; color: var(--danger); }
+    .section-title{font-family:'Syne',sans-serif;font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin:20px 0 10px}
 
-    /* ── SECTION TITLE ── */
-    .section-title {
-      font-family: 'Syne', sans-serif;
-      font-size: 11px;
-      font-weight: 800;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--muted);
-      margin: 20px 0 10px;
-    }
+    /* Turnos */
+    .chofer-row{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:var(--surface);border:1px solid var(--border);border-radius:12px;margin-bottom:8px}
+    .chofer-info{display:flex;flex-direction:column;gap:2px}
+    .chofer-nombre{font-weight:500;font-size:15px}
+    .chofer-auto{font-size:12px;color:var(--muted)}
+    .chofer-deuda{font-size:11px;color:var(--danger);margin-top:2px;font-family:'DM Mono',monospace}
+    .turno-btns{display:flex;gap:8px}
+    .turno-btn{padding:8px 14px;border-radius:8px;border:1px solid var(--border);background:var(--surface2);color:var(--text);font-family:'DM Mono',monospace;font-size:12px;font-weight:500;cursor:pointer;transition:all 0.15s}
+    .turno-btn:active{transform:scale(0.95)}
+    .turno-btn.full{background:var(--accent);color:#000;border-color:var(--accent);font-weight:700}
+    .turno-btn.medio{background:#1a1a00;color:var(--accent);border-color:#3a3a00}
 
-    /* ── TURNOS ── */
-    .chofer-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 14px 16px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      margin-bottom: 8px;
-    }
-    .chofer-info { display: flex; flex-direction: column; gap: 2px; }
-    .chofer-nombre { font-weight: 500; font-size: 15px; }
-    .chofer-auto { font-size: 12px; color: var(--muted); }
-    .turno-btns { display: flex; gap: 8px; }
-    .turno-btn {
-      padding: 8px 14px;
-      border-radius: 8px;
-      border: 1px solid var(--border);
-      background: var(--surface2);
-      color: var(--text);
-      font-family: 'DM Mono', monospace;
-      font-size: 12px;
-      font-weight: 500;
-      cursor: pointer;
-      transition: all 0.15s;
-    }
-    .turno-btn:active { transform: scale(0.95); }
-    .turno-btn.full { background: var(--accent); color: #000; border-color: var(--accent); font-weight: 700; }
-    .turno-btn.medio { background: #1a1a00; color: var(--accent); border-color: #3a3a00; }
+    .fecha-selector{display:flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px 16px;margin-bottom:16px}
+    .fecha-selector span{font-size:13px;color:var(--muted);flex-shrink:0}
+    .fecha-selector input[type=date]{background:transparent;border:none;color:var(--text);font-family:'DM Mono',monospace;font-size:14px;outline:none;flex:1;color-scheme:dark}
 
-    /* ── DATE PICKER ── */
-    .fecha-selector {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      padding: 12px 16px;
-      margin-bottom: 16px;
-    }
-    .fecha-selector span { font-size: 13px; color: var(--muted); flex-shrink: 0; }
-    .fecha-selector input[type="date"] {
-      background: transparent;
-      border: none;
-      color: var(--text);
-      font-family: 'DM Mono', monospace;
-      font-size: 14px;
-      outline: none;
-      flex: 1;
-      color-scheme: dark;
-    }
+    /* Form */
+    .form-group{margin-bottom:12px}
+    .form-label{font-size:11px;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);font-family:'DM Mono',monospace;display:block;margin-bottom:6px}
+    .form-input{width:100%;padding:14px 16px;background:var(--surface);border:1px solid var(--border);border-radius:12px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;outline:none;transition:border-color 0.2s;-webkit-appearance:none}
+    .form-input:focus{border-color:var(--accent)}
+    .form-input::placeholder{color:var(--muted)}
+    .radio-group{display:flex;gap:8px}
+    .radio-option{flex:1;padding:12px;border-radius:10px;border:1px solid var(--border);background:var(--surface);text-align:center;cursor:pointer;transition:all 0.15s}
+    .radio-option.selected{border-color:var(--accent);background:#1a1a00}
+    .radio-option input{display:none}
+    .radio-label{font-size:13px;font-weight:500;pointer-events:none}
+    .radio-sub{font-size:11px;color:var(--muted);pointer-events:none}
 
-    /* ── FORM ── */
-    .form-group { margin-bottom: 12px; }
-    .form-label {
-      font-size: 11px;
-      text-transform: uppercase;
-      letter-spacing: 1.5px;
-      color: var(--muted);
-      font-family: 'DM Mono', monospace;
-      display: block;
-      margin-bottom: 6px;
-    }
-    .form-input {
-      width: 100%;
-      padding: 14px 16px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      color: var(--text);
-      font-family: 'DM Sans', sans-serif;
-      font-size: 15px;
-      outline: none;
-      transition: border-color 0.2s;
-      -webkit-appearance: none;
-    }
-    .form-input:focus { border-color: var(--accent); }
-    .form-input::placeholder { color: var(--muted); }
+    .btn-primary{width:100%;padding:16px;background:var(--accent);color:#000;border:none;border-radius:14px;font-family:'Syne',sans-serif;font-size:15px;font-weight:800;letter-spacing:0.5px;cursor:pointer;margin-top:8px;transition:transform 0.15s,opacity 0.15s}
+    .btn-primary:active{transform:scale(0.98);opacity:0.9}
+    .btn-primary:disabled{opacity:0.4;cursor:not-allowed}
+    .btn-secondary{width:100%;padding:14px;background:transparent;color:var(--text);border:1px solid var(--border);border-radius:14px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;margin-top:8px}
 
-    .radio-group { display: flex; gap: 8px; }
-    .radio-option {
-      flex: 1;
-      padding: 12px;
-      border-radius: 10px;
-      border: 1px solid var(--border);
-      background: var(--surface);
-      text-align: center;
-      cursor: pointer;
-      transition: all 0.15s;
-    }
-    .radio-option.selected {
-      border-color: var(--accent);
-      background: #1a1a00;
-    }
-    .radio-option input { display: none; }
-    .radio-option .radio-label { font-size: 13px; font-weight: 500; pointer-events: none; }
-    .radio-option .radio-sub { font-size: 11px; color: var(--muted); pointer-events: none; }
+    /* Gastos */
+    .gasto-item{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:var(--surface);border:1px solid var(--border);border-radius:12px;margin-bottom:8px}
+    .gasto-desc{font-size:14px;font-weight:500}
+    .gasto-auto{font-size:11px;color:var(--muted);margin-top:2px}
+    .gasto-monto{font-family:'DM Mono',monospace;font-size:14px;color:var(--accent2);font-weight:500}
 
-    /* ── BTN PRINCIPAL ── */
-    .btn-primary {
-      width: 100%;
-      padding: 16px;
-      background: var(--accent);
-      color: #000;
-      border: none;
-      border-radius: 14px;
-      font-family: 'Syne', sans-serif;
-      font-size: 15px;
-      font-weight: 800;
-      letter-spacing: 0.5px;
-      cursor: pointer;
-      margin-top: 8px;
-      transition: transform 0.15s, opacity 0.15s;
-    }
-    .btn-primary:active { transform: scale(0.98); opacity: 0.9; }
-    .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+    /* Config */
+    .config-row{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:var(--surface);border:1px solid var(--border);border-radius:12px;margin-bottom:8px}
+    .config-label{font-size:14px;font-weight:500}
+    .config-sub{font-size:12px;color:var(--muted);margin-top:2px}
+    select.form-input{cursor:pointer}
 
-    /* ── GASTOS LIST ── */
-    .gasto-item {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 14px 16px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 12px;
-      margin-bottom: 8px;
-    }
-    .gasto-desc { font-size: 14px; font-weight: 500; }
-    .gasto-auto { font-size: 11px; color: var(--muted); margin-top: 2px; }
-    .gasto-monto {
-      font-family: 'DM Mono', monospace;
-      font-size: 14px;
-      color: var(--accent2);
-      font-weight: 500;
-    }
+    /* Kms input inline */
+    .kms-row{display:flex;gap:8px;align-items:center}
+    .kms-row input{flex:1;padding:10px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:'DM Mono',monospace;font-size:14px;outline:none;-webkit-appearance:none}
+    .kms-row input:focus{border-color:var(--accent)}
+    .kms-btn{padding:10px 16px;background:var(--accent);color:#000;border:none;border-radius:10px;font-weight:700;font-size:13px;cursor:pointer;white-space:nowrap}
 
-    /* ── TOAST ── */
-    .toast {
-      position: fixed;
-      bottom: 90px;
-      left: 50%;
-      transform: translateX(-50%) translateY(20px);
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      color: var(--text);
-      padding: 12px 20px;
-      border-radius: 12px;
-      font-size: 13px;
-      font-weight: 500;
-      opacity: 0;
-      transition: all 0.3s;
-      z-index: 999;
-      white-space: nowrap;
-      max-width: 90vw;
-      text-align: center;
-    }
-    .toast.show {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0);
-    }
-    .toast.success { border-color: var(--ok); color: var(--ok); }
-    .toast.error   { border-color: var(--danger); color: var(--danger); }
+    /* Toast */
+    .toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:12px 20px;border-radius:12px;font-size:13px;font-weight:500;opacity:0;transition:all 0.3s;z-index:999;white-space:nowrap;max-width:90vw;text-align:center}
+    .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+    .toast.success{border-color:var(--ok);color:var(--ok)}
+    .toast.error{border-color:var(--danger);color:var(--danger)}
 
-    /* ── BOTTOM NAV ── */
-    .bottom-nav {
-      position: fixed;
-      bottom: 0; left: 0; right: 0;
-      display: flex;
-      background: rgba(10,10,10,0.92);
-      backdrop-filter: blur(20px);
-      -webkit-backdrop-filter: blur(20px);
-      border-top: 1px solid var(--border);
-      padding: 8px 0 24px;
-      z-index: 200;
-    }
-    .bnav-btn {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 3px;
-      padding: 6px 0;
-      background: none;
-      border: none;
-      cursor: pointer;
-      color: var(--muted);
-      transition: color 0.2s;
-    }
-    .bnav-btn.active { color: var(--accent); }
-    .bnav-btn svg { width: 22px; height: 22px; }
-    .bnav-label { font-size: 10px; font-weight: 500; letter-spacing: 0.3px; }
+    /* Bottom nav */
+    .bottom-nav{position:fixed;bottom:0;left:0;right:0;display:flex;background:rgba(10,10,10,0.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--border);padding:8px 0 24px;z-index:200}
+    .bnav-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 0;background:none;border:none;cursor:pointer;color:var(--muted);transition:color 0.2s}
+    .bnav-btn.active{color:var(--accent)}
+    .bnav-btn svg{width:22px;height:22px}
+    .bnav-label{font-size:10px;font-weight:500;letter-spacing:0.3px}
 
-    /* ── LOADING ── */
-    .loading {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 60px 20px;
-      gap: 12px;
-      color: var(--muted);
-      font-size: 13px;
-    }
-    .spinner {
-      width: 28px; height: 28px;
-      border: 2px solid var(--border);
-      border-top-color: var(--accent);
-      border-radius: 50%;
-      animation: spin 0.8s linear infinite;
-    }
+    .loading{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 20px;gap:12px;color:var(--muted);font-size:13px}
+    .spinner{width:28px;height:28px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin 0.8s linear infinite}
 
-    /* ── ALERT BANNER ── */
-    .alert-banner {
-      background: #1a0505;
-      border: 1px solid #3a1010;
-      border-radius: 12px;
-      padding: 12px 16px;
-      margin-bottom: 12px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .alert-banner .alert-icon { font-size: 18px; flex-shrink: 0; }
-    .alert-banner .alert-text { font-size: 13px; line-height: 1.4; }
-    .alert-banner .alert-auto { font-weight: 700; color: var(--danger); }
+    .alert-banner{background:#1a0505;border:1px solid #3a1010;border-radius:12px;padding:12px 16px;margin-bottom:12px;display:flex;align-items:center;gap:10px}
+    .alert-icon{font-size:18px;flex-shrink:0}
+    .alert-text{font-size:13px;line-height:1.4}
+    .alert-auto{font-weight:700;color:var(--danger)}
+
+    .divider{height:1px;background:var(--border);margin:16px 0}
   </style>
 </head>
 <body>
 
 <div class="header">
   <h1>FLOTA<span>.</span></h1>
-  <button class="sync-btn" id="syncBtn" onclick="loadData()" title="Sincronizar">↻</button>
+  <button class="sync-btn" id="syncBtn" onclick="loadData()">↻</button>
 </div>
 
-<!-- PAGES -->
 <div class="page active" id="page-dashboard"></div>
 <div class="page" id="page-turnos"></div>
 <div class="page" id="page-gastos"></div>
-<div class="page" id="page-nuevo-gasto"></div>
+<div class="page" id="page-agregar"></div>
+<div class="page" id="page-config"></div>
 
-<!-- BOTTOM NAV -->
 <nav class="bottom-nav">
-  <button class="bnav-btn active" data-page="dashboard" onclick="showPage('dashboard', this)">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-      <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>
-      <rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
-    </svg>
+  <button class="bnav-btn active" onclick="showPage('dashboard',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
     <span class="bnav-label">Resumen</span>
   </button>
-  <button class="bnav-btn" data-page="turnos" onclick="showPage('turnos', this)">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-      <circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/>
-    </svg>
+  <button class="bnav-btn" onclick="showPage('turnos',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/></svg>
     <span class="bnav-label">Turnos</span>
   </button>
-  <button class="bnav-btn" data-page="gastos" onclick="showPage('gastos', this)">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-      <line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
-    </svg>
+  <button class="bnav-btn" onclick="showPage('gastos',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
     <span class="bnav-label">Gastos</span>
   </button>
-  <button class="bnav-btn" data-page="nuevo-gasto" onclick="showPage('nuevo-gasto', this)">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-      <circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/>
-    </svg>
+  <button class="bnav-btn" onclick="showPage('agregar',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
     <span class="bnav-label">Agregar</span>
+  </button>
+  <button class="bnav-btn" onclick="showPage('config',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
+    <span class="bnav-label">Config</span>
   </button>
 </nav>
 
 <div class="toast" id="toast"></div>
 
 <script>
-  // ── CONFIG ──────────────────────────────────────────────────────────────────
-  const API_BASE = "https://flota-backend-production.up.railway.app"; // ej: https://flota-bot.up.railway.app
-  const API_KEY  = "flota2026xK9";      // el mismo que pusiste en Railway
+const API_BASE = "https://flota-backend-production.up.railway.app";
+const API_KEY  = "flota2026xK9";
 
-  let cachedData = null;
+const DIAS = ["Lun","Mar","Mié","Jue","Vie","Sáb","Dom"];
+const DIAS_FULL = ["Lunes","Martes","Miércoles","Jueves","Viernes","Sábado","Domingo"];
 
-  // ── UTILS ───────────────────────────────────────────────────────────────────
-  function fmt(val) {
-    if (!val) return "—";
-    const n = parseFloat(String(val).replace(/[^0-9.-]/g, ""));
-    if (isNaN(n)) return val;
-    return "$" + n.toLocaleString("es-AR");
+let cachedData = null;
+
+// ── UTILS ──────────────────────────────────────────────────────────────────────
+function fmt(n) {
+  if (!n && n !== 0) return "—";
+  const num = typeof n === "number" ? n : parseFloat(String(n).replace(/[^0-9.-]/g,""));
+  if (isNaN(num)) return String(n);
+  return "$" + num.toLocaleString("es-AR");
+}
+
+function fmtFecha(iso) {
+  const [y,m,d] = iso.split("-");
+  return `${d}/${m}`;
+}
+
+function today() { return new Date().toISOString().split("T")[0]; }
+
+function showToast(msg, type="") {
+  const t = document.getElementById("toast");
+  t.textContent = msg; t.className = "toast show " + type;
+  setTimeout(() => t.className = "toast", 3000);
+}
+
+function showPage(name, btn) {
+  document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+  document.querySelectorAll(".bnav-btn").forEach(b => b.classList.remove("active"));
+  document.getElementById("page-"+name).classList.add("active");
+  if (btn) btn.classList.add("active");
+  if (name === "gastos") renderGastos();
+  if (name === "config") renderConfig();
+}
+
+async function apiFetch(path, opts={}) {
+  const res = await fetch(API_BASE+path, {
+    ...opts,
+    headers:{"X-API-Key":API_KEY,"Content-Type":"application/json",...(opts.headers||{})}
+  });
+  return res.json();
+}
+
+// ── LOAD DATA ──────────────────────────────────────────────────────────────────
+async function loadData() {
+  const btn = document.getElementById("syncBtn");
+  btn.classList.add("spinning");
+  document.getElementById("page-dashboard").innerHTML = `<div class="loading"><div class="spinner"></div>Cargando...</div>`;
+  try {
+    cachedData = await apiFetch("/resumen");
+    renderDashboard();
+    renderTurnos();
+  } catch(e) {
+    document.getElementById("page-dashboard").innerHTML = `<div class="loading">⚠️ Error de conexión</div>`;
+  } finally {
+    btn.classList.remove("spinning");
   }
+}
 
-  function today() {
-    return new Date().toISOString().split("T")[0];
-  }
+// ── DASHBOARD ──────────────────────────────────────────────────────────────────
+function renderDashboard() {
+  if (!cachedData) return;
+  const container = document.getElementById("page-dashboard");
+  let html = "";
 
-  function showToast(msg, type = "") {
-    const t = document.getElementById("toast");
-    t.textContent = msg;
-    t.className = "toast show " + type;
-    setTimeout(() => t.className = "toast", 3000);
-  }
+  // Totales generales
+  const tot = cachedData.totales || {};
+  html += `
+    <div class="section-title">Total flota</div>
+    <div class="gan-total">
+      <div><div class="gan-total-label">Esta semana</div><div class="gan-total-value">${fmt(tot.semana||0)}</div></div>
+      <div style="text-align:right"><div class="gan-total-label">Este mes</div><div class="gan-total-value">${fmt(tot.mes||0)}</div></div>
+    </div>`;
 
-  function showPage(name, btn) {
-    document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
-    document.querySelectorAll(".bnav-btn").forEach(b => b.classList.remove("active"));
-    document.getElementById("page-" + name).classList.add("active");
-    btn.classList.add("active");
-    if (name === "gastos") renderGastos();
-  }
-
-  async function apiFetch(path, opts = {}) {
-    const res = await fetch(API_BASE + path, {
-      ...opts,
-      headers: { "X-API-Key": API_KEY, "Content-Type": "application/json", ...(opts.headers || {}) }
+  // Alertas de mantenimiento
+  for (const [key, data] of Object.entries(cachedData)) {
+    if (!data.mantenimiento) continue;
+    data.mantenimiento.filter(m => m.estado === "CAMBIAR").forEach(m => {
+      html += `<div class="alert-banner"><span class="alert-icon">⚠️</span>
+        <div class="alert-text"><span class="alert-auto">${data.nombre}</span> — ${m.trabajo} necesita cambio</div></div>`;
     });
-    return res.json();
   }
 
-  // ── LOAD DATA ───────────────────────────────────────────────────────────────
-  async function loadData() {
-    const btn = document.getElementById("syncBtn");
-    btn.classList.add("spinning");
-    document.getElementById("page-dashboard").innerHTML = `
-      <div class="loading"><div class="spinner"></div>Cargando datos...</div>`;
-    try {
-      cachedData = await apiFetch("/resumen");
-      renderDashboard();
-      renderTurnos();
-    } catch(e) {
-      document.getElementById("page-dashboard").innerHTML = `
-        <div class="loading">⚠️ Error cargando datos.<br>Verificá la conexión.</div>`;
-    } finally {
-      btn.classList.remove("spinning");
-    }
-  }
+  // Por auto
+  for (const [key, data] of Object.entries(cachedData)) {
+    if (!data.nombre || data.error) continue;
+    const tagClass = key === "negro" ? "tag-negro" : "tag-blanco";
+    const gan = data.ganancias || {};
+    const deudas = data.deudas || {};
+    const choferes = data.choferes || {};
 
-  // ── DASHBOARD ───────────────────────────────────────────────────────────────
-  function renderDashboard() {
-    if (!cachedData) return;
-    const container = document.getElementById("page-dashboard");
-    let html = "";
+    html += `<div class="card">
+      <div class="card-header">
+        <span class="auto-tag ${tagClass}">${data.nombre}</span>
+        <span style="font-size:12px;color:var(--muted)">${Object.values(choferes).join(" · ")}</span>
+      </div>
 
-    // Alertas de mantenimiento
-    const alertas = [];
-    for (const [key, data] of Object.entries(cachedData)) {
-      if (data.error) continue;
-      (data.mantenimiento || []).forEach(m => {
-        if (m.estado === "CAMBIAR") alertas.push({ auto: data.nombre, ...m });
-      });
-    }
-    if (alertas.length) {
-      html += alertas.map(a => `
-        <div class="alert-banner">
-          <span class="alert-icon">⚠️</span>
-          <div class="alert-text">
-            <span class="alert-auto">${a.auto}</span> — ${a.trabajo} necesita cambio
-            ${a.faltan ? `<br><span style="color:var(--muted)">Faltan ${a.faltan} km</span>` : ""}
-          </div>
-        </div>`).join("");
-    }
-
-    for (const [key, data] of Object.entries(cachedData)) {
-      if (data.error) {
-        html += `<div class="card"><p style="color:var(--danger)">Error: ${data.error}</p></div>`;
-        continue;
-      }
-      const tagClass = key === "negro" ? "tag-negro" : "tag-blanco";
-      const choferes = Object.entries(data.choferes || {})
-        .map(([col, nombre]) => nombre).join(" · ");
-
-      html += `
-      <div class="card">
-        <div class="card-header">
-          <span class="auto-tag ${tagClass}">${data.nombre}</span>
-          <span style="font-size:12px;color:var(--muted)">${choferes}</span>
+      <div class="gan-row">
+        <div class="gan-card">
+          <div class="gan-label">Semana</div>
+          <div class="gan-value">${fmt(gan.semana?.total||0)}</div>
         </div>
-        <div class="metric-grid">
-          <div class="metric">
-            <div class="metric-label">Acumulado</div>
-            <div class="metric-value">${fmt(data.acumulado)}</div>
-          </div>
-          <div class="metric">
-            <div class="metric-label">Bruto/mes</div>
-            <div class="metric-value">${fmt(data.bruto_mensual)}</div>
-          </div>
-          <div class="metric">
-            <div class="metric-label">Gastos</div>
-            <div class="metric-value" style="color:var(--accent2)">${fmt(data.gastos_total)}</div>
-          </div>
-          <div class="metric">
-            <div class="metric-label">Kms</div>
-            <div class="metric-value" style="color:var(--text)">${data.kms_actuales || "—"}</div>
-          </div>
+        <div class="gan-card">
+          <div class="gan-label">Mes</div>
+          <div class="gan-value">${fmt(gan.mes?.total||0)}</div>
         </div>
-        ${renderMant(data.mantenimiento)}
-      </div>`;
-    }
-    container.innerHTML = html;
+      </div>
+
+      <div class="metric-grid">
+        <div class="metric"><div class="metric-label">Acumulado</div><div class="metric-value">${data.acumulado||"—"}</div></div>
+        <div class="metric"><div class="metric-label">Bruto/mes</div><div class="metric-value">${data.bruto_mensual||"—"}</div></div>
+        <div class="metric"><div class="metric-label">Gastos</div><div class="metric-value" style="color:var(--accent2)">${data.gastos_total||"—"}</div></div>
+        <div class="metric"><div class="metric-label">Kms</div><div class="metric-value" style="color:var(--text)">${data.kms_actuales||"—"}</div></div>
+      </div>
+
+      ${renderDeudas(deudas, choferes)}
+      ${renderMantCard(data.mantenimiento, key)}
+    </div>`;
   }
 
-  function renderMant(items) {
-    if (!items || !items.length) return "";
-    return `
-      <div class="section-title" style="margin-top:14px;margin-bottom:8px">Mantenimiento</div>
-      <div class="mant-list">
-        ${items.map(m => `
-          <div class="mant-item">
-            <div>
-              <div class="mant-nombre">${m.trabajo}</div>
-              ${m.faltan ? `<div class="mant-faltan">Faltan ${m.faltan} km</div>` : ""}
-            </div>
-            <span class="badge ${m.estado === 'CAMBIAR' ? 'badge-cambiar' : 'badge-ok'}">
-              ${m.estado === 'CAMBIAR' ? '⚠ CAMBIAR' : '✓ OK'}
-            </span>
-          </div>`).join("")}
+  container.innerHTML = html;
+}
+
+function renderDeudas(deudas, choferes) {
+  if (!deudas) return "";
+  let html = `<div class="divider"></div><div class="section-title" style="margin-top:0">Días adeudados</div><div class="deuda-section">`;
+  for (const [col, nombre] of Object.entries(choferes)) {
+    const dias = deudas[col] || [];
+    html += `<div class="deuda-chofer">
+      <div class="deuda-header">
+        <span class="deuda-nombre">${nombre}</span>
+        <span class="deuda-count ${dias.length===0?'ok':''}">${dias.length===0?"Al día":dias.length+" días"}</span>
       </div>`;
+    if (dias.length > 0) {
+      html += `<div class="dias-grid">` + dias.map(d =>
+        `<span class="dia-chip">${fmtFecha(d)}</span>`
+      ).join("") + `</div>`;
+    }
+    html += `</div>`;
+  }
+  return html + `</div>`;
+}
+
+function renderMantCard(items, autoKey) {
+  if (!items || !items.length) return "";
+  return `<div class="divider"></div>
+    <div class="section-title" style="margin-top:0">Mantenimiento</div>
+    <div class="mant-list">
+      ${items.map((m, i) => `
+        <div class="mant-item" onclick="showMantModal('${autoKey}',${i+4},'${m.trabajo}')">
+          <div>
+            <div class="mant-nombre">${m.trabajo}</div>
+            ${m.faltan ? `<div class="mant-faltan">Faltan ${m.faltan} km</div>` : ""}
+          </div>
+          <span class="badge ${m.estado==='CAMBIAR'?'badge-cambiar':'badge-ok'}">
+            ${m.estado==='CAMBIAR'?'⚠ CAMBIAR':'✓ OK'}
+          </span>
+        </div>`).join("")}
+    </div>`;
+}
+
+// ── MODAL MANTENIMIENTO ────────────────────────────────────────────────────────
+function showMantModal(autoKey, fila, trabajo) {
+  const autoNombre = cachedData[autoKey]?.nombre || autoKey;
+  const kmsAct = cachedData[autoKey]?.kms_actuales || "";
+  const modal = document.createElement("div");
+  modal.style.cssText = "position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:500;display:flex;align-items:flex-end";
+  modal.innerHTML = `
+    <div style="background:var(--surface);border-radius:20px 20px 0 0;width:100%;padding:24px 20px 40px">
+      <div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:800;margin-bottom:4px">${trabajo}</div>
+      <div style="font-size:13px;color:var(--muted);margin-bottom:20px">${autoNombre}</div>
+      <div class="form-label">Kms actuales al realizar el service</div>
+      <div class="kms-row" style="margin-bottom:16px">
+        <input type="number" inputmode="numeric" id="modalKms" value="${kmsAct}" placeholder="Ej: 45000">
+      </div>
+      <button class="btn-primary" onclick="confirmarMant('${autoKey}',${fila},this)">✓ MARCAR COMO REALIZADO</button>
+      <button class="btn-secondary" onclick="this.closest('[style]').remove()">Cancelar</button>
+    </div>`;
+  modal.onclick = e => { if(e.target===modal) modal.remove(); };
+  document.body.appendChild(modal);
+}
+
+async function confirmarMant(autoKey, fila, btn) {
+  const kms = document.getElementById("modalKms")?.value;
+  btn.disabled = true; btn.textContent = "Guardando...";
+  try {
+    const res = await apiFetch("/mantenimiento", {
+      method:"POST",
+      body: JSON.stringify({auto: autoKey, fila, kms_actuales: kms ? parseInt(kms) : null})
+    });
+    if (res.ok) {
+      showToast("✓ Mantenimiento registrado", "success");
+      btn.closest("[style]").remove();
+      loadData();
+    } else {
+      showToast("⚠ " + (res.error||"Error"), "error");
+      btn.disabled = false; btn.textContent = "✓ MARCAR COMO REALIZADO";
+    }
+  } catch(e) {
+    showToast("⚠ Error de conexión", "error");
+    btn.disabled = false; btn.textContent = "✓ MARCAR COMO REALIZADO";
+  }
+}
+
+// ── TURNOS ─────────────────────────────────────────────────────────────────────
+function renderTurnos() {
+  const container = document.getElementById("page-turnos");
+  if (!cachedData) { container.innerHTML=`<div class="loading"><div class="spinner"></div></div>`; return; }
+
+  const choferes = [];
+  for (const [key, data] of Object.entries(cachedData)) {
+    if (!data.choferes) continue;
+    for (const [col, nombre] of Object.entries(data.choferes)) {
+      const deudas = data.deudas?.[col] || [];
+      choferes.push({auto:key, nombre, col, autoNombre:data.nombre, deudas});
+    }
   }
 
-  // ── TURNOS ──────────────────────────────────────────────────────────────────
-  function renderTurnos() {
-    const container = document.getElementById("page-turnos");
-    if (!cachedData) {
-      container.innerHTML = `<div class="loading"><div class="spinner"></div></div>`;
-      return;
-    }
+  container.innerHTML = `
+    <div class="section-title">Fecha</div>
+    <div class="fecha-selector">
+      <span>📅</span>
+      <input type="date" id="turnoFecha" value="${today()}">
+    </div>
+    <div class="section-title">Registrar turno</div>
+    ${choferes.map(c => `
+      <div class="chofer-row">
+        <div class="chofer-info">
+          <span class="chofer-nombre">${c.nombre}</span>
+          <span class="chofer-auto">${c.autoNombre}</span>
+          ${c.deudas.length > 0 ? `<span class="chofer-deuda">⚠ ${c.deudas.length} día${c.deudas.length>1?'s':''} adeudado${c.deudas.length>1?'s':''}</span>` : ""}
+        </div>
+        <div class="turno-btns">
+          <button class="turno-btn medio" onclick="registrarTurno('${c.auto}','${c.col}',25,'${c.nombre}')">½</button>
+          <button class="turno-btn full"  onclick="registrarTurno('${c.auto}','${c.col}',50,'${c.nombre}')">✓ Full</button>
+        </div>
+      </div>`).join("")}
 
-    const choferes = [];
-    for (const [key, data] of Object.entries(cachedData)) {
-      if (data.error) continue;
-      for (const [col, nombre] of Object.entries(data.choferes || {})) {
-        choferes.push({ auto: key, nombre, col, autoNombre: data.nombre });
-      }
-    }
+    <div class="section-title" style="margin-top:24px">Actualizar kms</div>
+    ${Object.entries(cachedData).filter(([k,v])=>v.nombre).map(([key, data]) => `
+      <div class="chofer-row">
+        <div class="chofer-info">
+          <span class="chofer-nombre">${data.nombre}</span>
+          <span class="chofer-auto">Actual: ${data.kms_actuales||"—"} km</span>
+        </div>
+        <div class="kms-row" style="width:160px">
+          <input type="number" inputmode="numeric" id="kms_${key}" placeholder="km" style="padding:8px 10px;font-size:13px">
+          <button class="kms-btn" onclick="actualizarKms('${key}')">OK</button>
+        </div>
+      </div>`).join("")}`;
+}
+
+async function registrarTurno(auto, col, valor, nombre) {
+  const fecha = document.getElementById("turnoFecha")?.value || today();
+  try {
+    const res = await apiFetch("/turno", {method:"POST", body:JSON.stringify({auto,col,valor,fecha})});
+    if (res.ok) { showToast("✓ "+res.mensaje, "success"); loadData(); }
+    else showToast("⚠ "+(res.error||"Error"), "error");
+  } catch(e) { showToast("⚠ Error de conexión","error"); }
+}
+
+async function actualizarKms(auto) {
+  const kms = document.getElementById("kms_"+auto)?.value;
+  if (!kms) { showToast("Ingresá los kms","error"); return; }
+  try {
+    const res = await apiFetch("/kms", {method:"POST", body:JSON.stringify({auto, kms:parseInt(kms)})});
+    if (res.ok) { showToast("✓ "+res.mensaje, "success"); loadData(); }
+    else showToast("⚠ "+(res.error||"Error"),"error");
+  } catch(e) { showToast("⚠ Error de conexión","error"); }
+}
+
+// ── GASTOS ─────────────────────────────────────────────────────────────────────
+async function renderGastos() {
+  const container = document.getElementById("page-gastos");
+  container.innerHTML = `<div class="loading"><div class="spinner"></div>Cargando gastos...</div>`;
+  try {
+    const [negro, blanco] = await Promise.all([
+      apiFetch("/gastos?auto=negro"), apiFetch("/gastos?auto=blanco")
+    ]);
+    const all = [
+      ...(negro.gastos||[]).map(g=>({...g,autoNombre:"Prisma Negro"})),
+      ...(blanco.gastos||[]).map(g=>({...g,autoNombre:"Prisma Blanco"})),
+    ].reverse();
+    if (!all.length) { container.innerHTML=`<div class="loading">Sin gastos registrados</div>`; return; }
+    container.innerHTML = all.map(g=>`
+      <div class="gasto-item">
+        <div><div class="gasto-desc">${g.descripcion}</div><div class="gasto-auto">${g.autoNombre}</div></div>
+        <div class="gasto-monto">${g.monto||"—"}</div>
+      </div>`).join("");
+  } catch(e) { container.innerHTML=`<div class="loading">⚠️ Error cargando gastos</div>`; }
+}
+
+// ── AGREGAR ────────────────────────────────────────────────────────────────────
+let selectedAuto = "negro";
+document.getElementById("page-agregar").innerHTML = `
+  <div class="section-title">Auto</div>
+  <div class="radio-group" id="autoSelector">
+    <div class="radio-option selected" onclick="selectAuto('negro',this)">
+      <div class="radio-label">Prisma Negro</div><div class="radio-sub">Oscar · Luis</div>
+    </div>
+    <div class="radio-option" onclick="selectAuto('blanco',this)">
+      <div class="radio-label">Prisma Blanco</div><div class="radio-sub">Maxi · Javier</div>
+    </div>
+  </div>
+  <div class="section-title" style="margin-top:20px">Descripción</div>
+  <div class="form-group">
+    <input class="form-input" id="gastoDesc" type="text" placeholder="Ej: Aceite y filtros" autocomplete="off">
+  </div>
+  <div class="section-title">Monto</div>
+  <div class="form-group">
+    <input class="form-input" id="gastoMonto" type="number" inputmode="numeric" placeholder="0" style="font-family:'DM Mono',monospace">
+  </div>
+  <button class="btn-primary" onclick="submitGasto()">REGISTRAR GASTO</button>`;
+
+function selectAuto(auto, el) {
+  selectedAuto = auto;
+  document.querySelectorAll("#autoSelector .radio-option").forEach(o=>o.classList.remove("selected"));
+  el.classList.add("selected");
+}
+
+async function submitGasto() {
+  const desc  = document.getElementById("gastoDesc").value.trim();
+  const monto = parseFloat(document.getElementById("gastoMonto").value);
+  if (!desc || isNaN(monto) || monto<=0) { showToast("Completá descripción y monto","error"); return; }
+  try {
+    const res = await apiFetch("/gasto",{method:"POST",body:JSON.stringify({auto:selectedAuto,descripcion:desc,monto})});
+    if (res.ok) {
+      showToast("✓ "+res.mensaje,"success");
+      document.getElementById("gastoDesc").value="";
+      document.getElementById("gastoMonto").value="";
+    } else showToast("⚠ "+(res.error||"Error"),"error");
+  } catch(e) { showToast("⚠ Error de conexión","error"); }
+}
+
+// ── CONFIG ─────────────────────────────────────────────────────────────────────
+async function renderConfig() {
+  const container = document.getElementById("page-config");
+  container.innerHTML = `<div class="loading"><div class="spinner"></div></div>`;
+  try {
+    const francos = await apiFetch("/francos");
+    const diaActual = francos.franco_weekday ?? 1;
+    const excepciones = francos.excepciones || {};
+
+    let excHtml = Object.entries(excepciones).length === 0
+      ? `<div style="color:var(--muted);font-size:13px;padding:10px 0">Sin excepciones cargadas</div>`
+      : Object.entries(excepciones).map(([fecha, motivo]) => `
+          <div class="config-row">
+            <div><div class="config-label">${fmtFecha(fecha)}</div><div class="config-sub">${motivo}</div></div>
+            <button onclick="eliminarExcepcion('${fecha}')" style="background:#2b0d0d;color:var(--danger);border:1px solid #3a1010;padding:6px 12px;border-radius:8px;font-size:12px;cursor:pointer">Quitar</button>
+          </div>`).join("");
 
     container.innerHTML = `
-      <div class="section-title">Fecha</div>
-      <div class="fecha-selector">
-        <span>📅</span>
-        <input type="date" id="turnoFecha" value="${today()}">
-      </div>
-      <div class="section-title">Registrar turno</div>
-      ${choferes.map(c => `
-        <div class="chofer-row">
-          <div class="chofer-info">
-            <span class="chofer-nombre">${c.nombre}</span>
-            <span class="chofer-auto">${c.autoNombre}</span>
-          </div>
-          <div class="turno-btns">
-            <button class="turno-btn medio" onclick="registrarTurno('${c.auto}','${c.col}',25,'${c.nombre}')">½</button>
-            <button class="turno-btn full"  onclick="registrarTurno('${c.auto}','${c.col}',50,'${c.nombre}')">✓ Full</button>
-          </div>
-        </div>`).join("")}`;
-  }
-
-  async function registrarTurno(auto, col, valor, nombre) {
-    const fecha = document.getElementById("turnoFecha")?.value || today();
-    try {
-      const res = await apiFetch("/turno", {
-        method: "POST",
-        body: JSON.stringify({ auto, col, valor, fecha })
-      });
-      if (res.ok) showToast("✓ " + res.mensaje, "success");
-      else showToast("⚠ " + (res.error || "Error"), "error");
-    } catch(e) {
-      showToast("⚠ Error de conexión", "error");
-    }
-  }
-
-  // ── GASTOS ──────────────────────────────────────────────────────────────────
-  async function renderGastos() {
-    const container = document.getElementById("page-gastos");
-    container.innerHTML = `<div class="loading"><div class="spinner"></div>Cargando gastos...</div>`;
-    try {
-      const [negro, blanco] = await Promise.all([
-        apiFetch("/gastos?auto=negro"),
-        apiFetch("/gastos?auto=blanco")
-      ]);
-      let html = "";
-
-      const allGastos = [
-        ...(negro.gastos || []).map(g => ({...g, auto: "negro", autoNombre: "Prisma Negro"})),
-        ...(blanco.gastos || []).map(g => ({...g, auto: "blanco", autoNombre: "Prisma Blanco"})),
-      ].reverse();
-
-      if (!allGastos.length) {
-        html = `<div class="loading">Sin gastos registrados</div>`;
-      } else {
-        html = allGastos.map(g => `
-          <div class="gasto-item">
-            <div>
-              <div class="gasto-desc">${g.descripcion}</div>
-              <div class="gasto-auto">${g.autoNombre}</div>
-            </div>
-            <div class="gasto-monto">${fmt(g.monto)}</div>
-          </div>`).join("");
-      }
-      container.innerHTML = html;
-    } catch(e) {
-      container.innerHTML = `<div class="loading">⚠️ Error cargando gastos</div>`;
-    }
-  }
-
-  // ── NUEVO GASTO ─────────────────────────────────────────────────────────────
-  (function buildNuevoGasto() {
-    document.getElementById("page-nuevo-gasto").innerHTML = `
-      <div class="section-title">Auto</div>
-      <div class="radio-group" id="autoSelector">
-        <div class="radio-option selected" onclick="selectAuto('negro', this)">
-          <div class="radio-label">Prisma Negro</div>
-          <div class="radio-sub">Oscar · Luis</div>
-        </div>
-        <div class="radio-option" onclick="selectAuto('blanco', this)">
-          <div class="radio-label">Prisma Blanco</div>
-          <div class="radio-sub">Maxi · Javier</div>
-        </div>
-      </div>
-
-      <div class="section-title" style="margin-top:20px">Descripción</div>
+      <div class="section-title">Día de franco por defecto</div>
       <div class="form-group">
-        <input class="form-input" id="gastoDesc" type="text" placeholder="Ej: Aceite y filtros" autocomplete="off">
+        <select class="form-input" id="diaFrancoSelect" onchange="cambiarDiaFranco(this.value)">
+          ${DIAS_FULL.map((d,i)=>`<option value="${i}" ${i===diaActual?'selected':''}>${d}</option>`).join("")}
+        </select>
       </div>
 
-      <div class="section-title">Monto</div>
+      <div class="section-title" style="margin-top:24px">Agregar excepción</div>
+      <div style="font-size:13px;color:var(--muted);margin-bottom:12px">Marcá un día específico como franco o reparación</div>
       <div class="form-group">
-        <input class="form-input" id="gastoMonto" type="number" inputmode="numeric" placeholder="0" style="font-family:'DM Mono',monospace;">
+        <label class="form-label">Fecha</label>
+        <input class="form-input" type="date" id="excFecha" value="${today()}">
       </div>
+      <div class="form-group">
+        <label class="form-label">Motivo</label>
+        <select class="form-input" id="excMotivo">
+          <option value="franco_especial">Franco especial</option>
+          <option value="reparacion">Auto en reparación</option>
+          <option value="feriado">Feriado</option>
+        </select>
+      </div>
+      <button class="btn-primary" onclick="agregarExcepcion()">AGREGAR EXCEPCIÓN</button>
 
-      <button class="btn-primary" onclick="submitGasto()">REGISTRAR GASTO</button>`;
-  })();
-
-  let selectedAuto = "negro";
-  function selectAuto(auto, el) {
-    selectedAuto = auto;
-    document.querySelectorAll("#autoSelector .radio-option").forEach(o => o.classList.remove("selected"));
-    el.classList.add("selected");
+      <div class="section-title" style="margin-top:24px">Excepciones cargadas</div>
+      ${excHtml}`;
+  } catch(e) {
+    container.innerHTML = `<div class="loading">⚠️ Error cargando config</div>`;
   }
+}
 
-  async function submitGasto() {
-    const desc  = document.getElementById("gastoDesc").value.trim();
-    const monto = parseFloat(document.getElementById("gastoMonto").value);
-    if (!desc || isNaN(monto) || monto <= 0) {
-      showToast("Completá descripción y monto", "error");
-      return;
-    }
-    try {
-      const res = await apiFetch("/gasto", {
-        method: "POST",
-        body: JSON.stringify({ auto: selectedAuto, descripcion: desc, monto })
-      });
-      if (res.ok) {
-        showToast("✓ " + res.mensaje, "success");
-        document.getElementById("gastoDesc").value = "";
-        document.getElementById("gastoMonto").value = "";
-      } else {
-        showToast("⚠ " + (res.error || "Error"), "error");
-      }
-    } catch(e) {
-      showToast("⚠ Error de conexión", "error");
-    }
-  }
+async function cambiarDiaFranco(val) {
+  try {
+    await apiFetch("/francos",{method:"POST",body:JSON.stringify({franco_weekday:parseInt(val)})});
+    showToast("✓ Día de franco actualizado","success");
+    loadData();
+  } catch(e) { showToast("⚠ Error","error"); }
+}
 
-  // ── INIT ────────────────────────────────────────────────────────────────────
-  loadData();
+async function agregarExcepcion() {
+  const fecha  = document.getElementById("excFecha").value;
+  const motivo = document.getElementById("excMotivo").value;
+  if (!fecha) { showToast("Seleccioná una fecha","error"); return; }
+  try {
+    const res = await apiFetch("/francos",{method:"POST",body:JSON.stringify({excepcion_fecha:fecha,motivo})});
+    if (res.ok) { showToast("✓ Excepción agregada","success"); renderConfig(); loadData(); }
+    else showToast("⚠ Error","error");
+  } catch(e) { showToast("⚠ Error de conexión","error"); }
+}
+
+async function eliminarExcepcion(fecha) {
+  try {
+    const res = await apiFetch("/francos",{method:"POST",body:JSON.stringify({eliminar_excepcion:fecha})});
+    if (res.ok) { showToast("✓ Excepción eliminada","success"); renderConfig(); loadData(); }
+  } catch(e) { showToast("⚠ Error","error"); }
+}
+
+// ── INIT ───────────────────────────────────────────────────────────────────────
+loadData();
 </script>
 </body>
 </html>
