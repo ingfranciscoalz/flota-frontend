@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Flota">
+  <meta name="theme-color" content="#0a0a0a">
+  <title>Flota</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:        #0a0a0a;
+      --surface:   #141414;
+      --surface2:  #1e1e1e;
+      --border:    #2a2a2a;
+      --accent:    #e8ff47;
+      --accent2:   #ff6b35;
+      --text:      #f0f0f0;
+      --muted:     #666;
+      --danger:    #ff4545;
+      --ok:        #47ff8a;
+      --negro:     #c8c8c8;
+      --blanco:    #ffffff;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100dvh;
+      overflow-x: hidden;
+    }
+
+    /* ── HEADER ── */
+    .header {
+      padding: 52px 20px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: linear-gradient(to bottom, var(--bg) 80%, transparent);
+    }
+    .header h1 {
+      font-family: 'Syne', sans-serif;
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+    .header h1 span { color: var(--accent); }
+    .sync-btn {
+      width: 38px; height: 38px;
+      border-radius: 50%;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-size: 16px;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      transition: transform 0.3s;
+    }
+    .sync-btn.spinning { animation: spin 1s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* ── NAV TABS ── */
+    .nav {
+      display: flex;
+      gap: 6px;
+      padding: 0 20px 16px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    .nav::-webkit-scrollbar { display: none; }
+    .nav-btn {
+      flex-shrink: 0;
+      padding: 8px 16px;
+      border-radius: 20px;
+      border: 1px solid var(--border);
+      background: transparent;
+      color: var(--muted);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .nav-btn.active {
+      background: var(--accent);
+      color: #000;
+      border-color: var(--accent);
+      font-weight: 700;
+    }
+
+    /* ── PAGES ── */
+    .page { display: none; padding: 0 20px 100px; }
+    .page.active { display: block; }
+
+    /* ── CARDS ── */
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      margin-bottom: 12px;
+    }
+    .card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 16px;
+    }
+    .auto-tag {
+      font-family: 'Syne', sans-serif;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 4px 10px;
+      border-radius: 6px;
+    }
+    .tag-negro  { background: #222; color: var(--negro); border: 1px solid #444; }
+    .tag-blanco { background: #f5f5f5; color: #111; }
+
+    .metric-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+    }
+    .metric {
+      background: var(--surface2);
+      border-radius: 10px;
+      padding: 12px;
+    }
+    .metric-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--muted);
+      margin-bottom: 4px;
+      font-family: 'DM Mono', monospace;
+    }
+    .metric-value {
+      font-family: 'DM Mono', monospace;
+      font-size: 15px;
+      font-weight: 500;
+      color: var(--accent);
+    }
+
+    /* ── MANTENIMIENTO ── */
+    .mant-list { margin-top: 14px; display: flex; flex-direction: column; gap: 8px; }
+    .mant-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 12px;
+      background: var(--surface2);
+      border-radius: 10px;
+    }
+    .mant-nombre { font-size: 13px; font-weight: 500; }
+    .mant-faltan { font-family: 'DM Mono', monospace; font-size: 11px; color: var(--muted); }
+    .badge {
+      font-size: 10px;
+      font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 5px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    .badge-ok      { background: #0d2b18; color: var(--ok); }
+    .badge-cambiar { background: #2b0d0d; color: var(--danger); }
+
+    /* ── SECTION TITLE ── */
+    .section-title {
+      font-family: 'Syne', sans-serif;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin: 20px 0 10px;
+    }
+
+    /* ── TURNOS ── */
+    .chofer-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      margin-bottom: 8px;
+    }
+    .chofer-info { display: flex; flex-direction: column; gap: 2px; }
+    .chofer-nombre { font-weight: 500; font-size: 15px; }
+    .chofer-auto { font-size: 12px; color: var(--muted); }
+    .turno-btns { display: flex; gap: 8px; }
+    .turno-btn {
+      padding: 8px 14px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--surface2);
+      color: var(--text);
+      font-family: 'DM Mono', monospace;
+      font-size: 12px;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .turno-btn:active { transform: scale(0.95); }
+    .turno-btn.full { background: var(--accent); color: #000; border-color: var(--accent); font-weight: 700; }
+    .turno-btn.medio { background: #1a1a00; color: var(--accent); border-color: #3a3a00; }
+
+    /* ── DATE PICKER ── */
+    .fecha-selector {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 16px;
+      margin-bottom: 16px;
+    }
+    .fecha-selector span { font-size: 13px; color: var(--muted); flex-shrink: 0; }
+    .fecha-selector input[type="date"] {
+      background: transparent;
+      border: none;
+      color: var(--text);
+      font-family: 'DM Mono', monospace;
+      font-size: 14px;
+      outline: none;
+      flex: 1;
+      color-scheme: dark;
+    }
+
+    /* ── FORM ── */
+    .form-group { margin-bottom: 12px; }
+    .form-label {
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      color: var(--muted);
+      font-family: 'DM Mono', monospace;
+      display: block;
+      margin-bottom: 6px;
+    }
+    .form-input {
+      width: 100%;
+      padding: 14px 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      color: var(--text);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      outline: none;
+      transition: border-color 0.2s;
+      -webkit-appearance: none;
+    }
+    .form-input:focus { border-color: var(--accent); }
+    .form-input::placeholder { color: var(--muted); }
+
+    .radio-group { display: flex; gap: 8px; }
+    .radio-option {
+      flex: 1;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .radio-option.selected {
+      border-color: var(--accent);
+      background: #1a1a00;
+    }
+    .radio-option input { display: none; }
+    .radio-option .radio-label { font-size: 13px; font-weight: 500; pointer-events: none; }
+    .radio-option .radio-sub { font-size: 11px; color: var(--muted); pointer-events: none; }
+
+    /* ── BTN PRINCIPAL ── */
+    .btn-primary {
+      width: 100%;
+      padding: 16px;
+      background: var(--accent);
+      color: #000;
+      border: none;
+      border-radius: 14px;
+      font-family: 'Syne', sans-serif;
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: transform 0.15s, opacity 0.15s;
+    }
+    .btn-primary:active { transform: scale(0.98); opacity: 0.9; }
+    .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    /* ── GASTOS LIST ── */
+    .gasto-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      margin-bottom: 8px;
+    }
+    .gasto-desc { font-size: 14px; font-weight: 500; }
+    .gasto-auto { font-size: 11px; color: var(--muted); margin-top: 2px; }
+    .gasto-monto {
+      font-family: 'DM Mono', monospace;
+      font-size: 14px;
+      color: var(--accent2);
+      font-weight: 500;
+    }
+
+    /* ── TOAST ── */
+    .toast {
+      position: fixed;
+      bottom: 90px;
+      left: 50%;
+      transform: translateX(-50%) translateY(20px);
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 12px 20px;
+      border-radius: 12px;
+      font-size: 13px;
+      font-weight: 500;
+      opacity: 0;
+      transition: all 0.3s;
+      z-index: 999;
+      white-space: nowrap;
+      max-width: 90vw;
+      text-align: center;
+    }
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(0);
+    }
+    .toast.success { border-color: var(--ok); color: var(--ok); }
+    .toast.error   { border-color: var(--danger); color: var(--danger); }
+
+    /* ── BOTTOM NAV ── */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0; left: 0; right: 0;
+      display: flex;
+      background: rgba(10,10,10,0.92);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-top: 1px solid var(--border);
+      padding: 8px 0 24px;
+      z-index: 200;
+    }
+    .bnav-btn {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      padding: 6px 0;
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--muted);
+      transition: color 0.2s;
+    }
+    .bnav-btn.active { color: var(--accent); }
+    .bnav-btn svg { width: 22px; height: 22px; }
+    .bnav-label { font-size: 10px; font-weight: 500; letter-spacing: 0.3px; }
+
+    /* ── LOADING ── */
+    .loading {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 60px 20px;
+      gap: 12px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+    .spinner {
+      width: 28px; height: 28px;
+      border: 2px solid var(--border);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+    }
+
+    /* ── ALERT BANNER ── */
+    .alert-banner {
+      background: #1a0505;
+      border: 1px solid #3a1010;
+      border-radius: 12px;
+      padding: 12px 16px;
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .alert-banner .alert-icon { font-size: 18px; flex-shrink: 0; }
+    .alert-banner .alert-text { font-size: 13px; line-height: 1.4; }
+    .alert-banner .alert-auto { font-weight: 700; color: var(--danger); }
+  </style>
+</head>
+<body>
+
+<div class="header">
+  <h1>FLOTA<span>.</span></h1>
+  <button class="sync-btn" id="syncBtn" onclick="loadData()" title="Sincronizar">↻</button>
+</div>
+
+<!-- PAGES -->
+<div class="page active" id="page-dashboard"></div>
+<div class="page" id="page-turnos"></div>
+<div class="page" id="page-gastos"></div>
+<div class="page" id="page-nuevo-gasto"></div>
+
+<!-- BOTTOM NAV -->
+<nav class="bottom-nav">
+  <button class="bnav-btn active" data-page="dashboard" onclick="showPage('dashboard', this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+      <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>
+      <rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
+    </svg>
+    <span class="bnav-label">Resumen</span>
+  </button>
+  <button class="bnav-btn" data-page="turnos" onclick="showPage('turnos', this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+      <circle cx="12" cy="12" r="9"/><polyline points="12 7 12 12 15 15"/>
+    </svg>
+    <span class="bnav-label">Turnos</span>
+  </button>
+  <button class="bnav-btn" data-page="gastos" onclick="showPage('gastos', this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+      <line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
+    </svg>
+    <span class="bnav-label">Gastos</span>
+  </button>
+  <button class="bnav-btn" data-page="nuevo-gasto" onclick="showPage('nuevo-gasto', this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+      <circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/>
+    </svg>
+    <span class="bnav-label">Agregar</span>
+  </button>
+</nav>
+
+<div class="toast" id="toast"></div>
+
+<script>
+  // ── CONFIG ──────────────────────────────────────────────────────────────────
+  const API_BASE = "https://flota-backend-production.up.railway.app"; // ej: https://flota-bot.up.railway.app
+  const API_KEY  = "flota2026xK9";      // el mismo que pusiste en Railway
+
+  let cachedData = null;
+
+  // ── UTILS ───────────────────────────────────────────────────────────────────
+  function fmt(val) {
+    if (!val) return "—";
+    const n = parseFloat(String(val).replace(/[^0-9.-]/g, ""));
+    if (isNaN(n)) return val;
+    return "$" + n.toLocaleString("es-AR");
+  }
+
+  function today() {
+    return new Date().toISOString().split("T")[0];
+  }
+
+  function showToast(msg, type = "") {
+    const t = document.getElementById("toast");
+    t.textContent = msg;
+    t.className = "toast show " + type;
+    setTimeout(() => t.className = "toast", 3000);
+  }
+
+  function showPage(name, btn) {
+    document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+    document.querySelectorAll(".bnav-btn").forEach(b => b.classList.remove("active"));
+    document.getElementById("page-" + name).classList.add("active");
+    btn.classList.add("active");
+    if (name === "gastos") renderGastos();
+  }
+
+  async function apiFetch(path, opts = {}) {
+    const res = await fetch(API_BASE + path, {
+      ...opts,
+      headers: { "X-API-Key": API_KEY, "Content-Type": "application/json", ...(opts.headers || {}) }
+    });
+    return res.json();
+  }
+
+  // ── LOAD DATA ───────────────────────────────────────────────────────────────
+  async function loadData() {
+    const btn = document.getElementById("syncBtn");
+    btn.classList.add("spinning");
+    document.getElementById("page-dashboard").innerHTML = `
+      <div class="loading"><div class="spinner"></div>Cargando datos...</div>`;
+    try {
+      cachedData = await apiFetch("/resumen");
+      renderDashboard();
+      renderTurnos();
+    } catch(e) {
+      document.getElementById("page-dashboard").innerHTML = `
+        <div class="loading">⚠️ Error cargando datos.<br>Verificá la conexión.</div>`;
+    } finally {
+      btn.classList.remove("spinning");
+    }
+  }
+
+  // ── DASHBOARD ───────────────────────────────────────────────────────────────
+  function renderDashboard() {
+    if (!cachedData) return;
+    const container = document.getElementById("page-dashboard");
+    let html = "";
+
+    // Alertas de mantenimiento
+    const alertas = [];
+    for (const [key, data] of Object.entries(cachedData)) {
+      if (data.error) continue;
+      (data.mantenimiento || []).forEach(m => {
+        if (m.estado === "CAMBIAR") alertas.push({ auto: data.nombre, ...m });
+      });
+    }
+    if (alertas.length) {
+      html += alertas.map(a => `
+        <div class="alert-banner">
+          <span class="alert-icon">⚠️</span>
+          <div class="alert-text">
+            <span class="alert-auto">${a.auto}</span> — ${a.trabajo} necesita cambio
+            ${a.faltan ? `<br><span style="color:var(--muted)">Faltan ${a.faltan} km</span>` : ""}
+          </div>
+        </div>`).join("");
+    }
+
+    for (const [key, data] of Object.entries(cachedData)) {
+      if (data.error) {
+        html += `<div class="card"><p style="color:var(--danger)">Error: ${data.error}</p></div>`;
+        continue;
+      }
+      const tagClass = key === "negro" ? "tag-negro" : "tag-blanco";
+      const choferes = Object.entries(data.choferes || {})
+        .map(([col, nombre]) => nombre).join(" · ");
+
+      html += `
+      <div class="card">
+        <div class="card-header">
+          <span class="auto-tag ${tagClass}">${data.nombre}</span>
+          <span style="font-size:12px;color:var(--muted)">${choferes}</span>
+        </div>
+        <div class="metric-grid">
+          <div class="metric">
+            <div class="metric-label">Acumulado</div>
+            <div class="metric-value">${fmt(data.acumulado)}</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">Bruto/mes</div>
+            <div class="metric-value">${fmt(data.bruto_mensual)}</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">Gastos</div>
+            <div class="metric-value" style="color:var(--accent2)">${fmt(data.gastos_total)}</div>
+          </div>
+          <div class="metric">
+            <div class="metric-label">Kms</div>
+            <div class="metric-value" style="color:var(--text)">${data.kms_actuales || "—"}</div>
+          </div>
+        </div>
+        ${renderMant(data.mantenimiento)}
+      </div>`;
+    }
+    container.innerHTML = html;
+  }
+
+  function renderMant(items) {
+    if (!items || !items.length) return "";
+    return `
+      <div class="section-title" style="margin-top:14px;margin-bottom:8px">Mantenimiento</div>
+      <div class="mant-list">
+        ${items.map(m => `
+          <div class="mant-item">
+            <div>
+              <div class="mant-nombre">${m.trabajo}</div>
+              ${m.faltan ? `<div class="mant-faltan">Faltan ${m.faltan} km</div>` : ""}
+            </div>
+            <span class="badge ${m.estado === 'CAMBIAR' ? 'badge-cambiar' : 'badge-ok'}">
+              ${m.estado === 'CAMBIAR' ? '⚠ CAMBIAR' : '✓ OK'}
+            </span>
+          </div>`).join("")}
+      </div>`;
+  }
+
+  // ── TURNOS ──────────────────────────────────────────────────────────────────
+  function renderTurnos() {
+    const container = document.getElementById("page-turnos");
+    if (!cachedData) {
+      container.innerHTML = `<div class="loading"><div class="spinner"></div></div>`;
+      return;
+    }
+
+    const choferes = [];
+    for (const [key, data] of Object.entries(cachedData)) {
+      if (data.error) continue;
+      for (const [col, nombre] of Object.entries(data.choferes || {})) {
+        choferes.push({ auto: key, nombre, col, autoNombre: data.nombre });
+      }
+    }
+
+    container.innerHTML = `
+      <div class="section-title">Fecha</div>
+      <div class="fecha-selector">
+        <span>📅</span>
+        <input type="date" id="turnoFecha" value="${today()}">
+      </div>
+      <div class="section-title">Registrar turno</div>
+      ${choferes.map(c => `
+        <div class="chofer-row">
+          <div class="chofer-info">
+            <span class="chofer-nombre">${c.nombre}</span>
+            <span class="chofer-auto">${c.autoNombre}</span>
+          </div>
+          <div class="turno-btns">
+            <button class="turno-btn medio" onclick="registrarTurno('${c.auto}','${c.col}',25,'${c.nombre}')">½</button>
+            <button class="turno-btn full"  onclick="registrarTurno('${c.auto}','${c.col}',50,'${c.nombre}')">✓ Full</button>
+          </div>
+        </div>`).join("")}`;
+  }
+
+  async function registrarTurno(auto, col, valor, nombre) {
+    const fecha = document.getElementById("turnoFecha")?.value || today();
+    try {
+      const res = await apiFetch("/turno", {
+        method: "POST",
+        body: JSON.stringify({ auto, col, valor, fecha })
+      });
+      if (res.ok) showToast("✓ " + res.mensaje, "success");
+      else showToast("⚠ " + (res.error || "Error"), "error");
+    } catch(e) {
+      showToast("⚠ Error de conexión", "error");
+    }
+  }
+
+  // ── GASTOS ──────────────────────────────────────────────────────────────────
+  async function renderGastos() {
+    const container = document.getElementById("page-gastos");
+    container.innerHTML = `<div class="loading"><div class="spinner"></div>Cargando gastos...</div>`;
+    try {
+      const [negro, blanco] = await Promise.all([
+        apiFetch("/gastos?auto=negro"),
+        apiFetch("/gastos?auto=blanco")
+      ]);
+      let html = "";
+
+      const allGastos = [
+        ...(negro.gastos || []).map(g => ({...g, auto: "negro", autoNombre: "Prisma Negro"})),
+        ...(blanco.gastos || []).map(g => ({...g, auto: "blanco", autoNombre: "Prisma Blanco"})),
+      ].reverse();
+
+      if (!allGastos.length) {
+        html = `<div class="loading">Sin gastos registrados</div>`;
+      } else {
+        html = allGastos.map(g => `
+          <div class="gasto-item">
+            <div>
+              <div class="gasto-desc">${g.descripcion}</div>
+              <div class="gasto-auto">${g.autoNombre}</div>
+            </div>
+            <div class="gasto-monto">${fmt(g.monto)}</div>
+          </div>`).join("");
+      }
+      container.innerHTML = html;
+    } catch(e) {
+      container.innerHTML = `<div class="loading">⚠️ Error cargando gastos</div>`;
+    }
+  }
+
+  // ── NUEVO GASTO ─────────────────────────────────────────────────────────────
+  (function buildNuevoGasto() {
+    document.getElementById("page-nuevo-gasto").innerHTML = `
+      <div class="section-title">Auto</div>
+      <div class="radio-group" id="autoSelector">
+        <div class="radio-option selected" onclick="selectAuto('negro', this)">
+          <div class="radio-label">Prisma Negro</div>
+          <div class="radio-sub">Oscar · Luis</div>
+        </div>
+        <div class="radio-option" onclick="selectAuto('blanco', this)">
+          <div class="radio-label">Prisma Blanco</div>
+          <div class="radio-sub">Maxi · Javier</div>
+        </div>
+      </div>
+
+      <div class="section-title" style="margin-top:20px">Descripción</div>
+      <div class="form-group">
+        <input class="form-input" id="gastoDesc" type="text" placeholder="Ej: Aceite y filtros" autocomplete="off">
+      </div>
+
+      <div class="section-title">Monto</div>
+      <div class="form-group">
+        <input class="form-input" id="gastoMonto" type="number" inputmode="numeric" placeholder="0" style="font-family:'DM Mono',monospace;">
+      </div>
+
+      <button class="btn-primary" onclick="submitGasto()">REGISTRAR GASTO</button>`;
+  })();
+
+  let selectedAuto = "negro";
+  function selectAuto(auto, el) {
+    selectedAuto = auto;
+    document.querySelectorAll("#autoSelector .radio-option").forEach(o => o.classList.remove("selected"));
+    el.classList.add("selected");
+  }
+
+  async function submitGasto() {
+    const desc  = document.getElementById("gastoDesc").value.trim();
+    const monto = parseFloat(document.getElementById("gastoMonto").value);
+    if (!desc || isNaN(monto) || monto <= 0) {
+      showToast("Completá descripción y monto", "error");
+      return;
+    }
+    try {
+      const res = await apiFetch("/gasto", {
+        method: "POST",
+        body: JSON.stringify({ auto: selectedAuto, descripcion: desc, monto })
+      });
+      if (res.ok) {
+        showToast("✓ " + res.mensaje, "success");
+        document.getElementById("gastoDesc").value = "";
+        document.getElementById("gastoMonto").value = "";
+      } else {
+        showToast("⚠ " + (res.error || "Error"), "error");
+      }
+    } catch(e) {
+      showToast("⚠ Error de conexión", "error");
+    }
+  }
+
+  // ── INIT ────────────────────────────────────────────────────────────────────
+  loadData();
+</script>
+</body>
+</html>
