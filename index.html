@@ -8,144 +8,166 @@
   <meta name="apple-mobile-web-app-title" content="Flota">
   <meta name="theme-color" content="#0a0a0a">
   <title>Flota</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
     :root {
       --bg:#0a0a0a; --surface:#141414; --surface2:#1e1e1e; --border:#2a2a2a;
-      --accent:#e8ff47; --accent2:#ff6b35; --text:#f0f0f0; --muted:#666;
+      --accent:#e8ff47; --accent2:#ff6b35; --text:#f0f0f0; --muted:#555;
       --danger:#ff4545; --ok:#47ff8a; --warn:#ffb347;
     }
     *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
     body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100dvh;overflow-x:hidden}
 
-    .header{padding:52px 20px 16px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;background:linear-gradient(to bottom,var(--bg) 80%,transparent)}
-    .header h1{font-family:'Syne',sans-serif;font-size:28px;font-weight:800;letter-spacing:-0.5px}
+    /* HEADER */
+    .header{padding:52px 20px 12px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;background:linear-gradient(to bottom,var(--bg) 75%,transparent)}
+    .header h1{font-family:'Syne',sans-serif;font-size:26px;font-weight:800;letter-spacing:-0.5px}
     .header h1 span{color:var(--accent)}
-    .sync-btn{width:38px;height:38px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+    .sync-btn{width:36px;height:36px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center}
     .sync-btn.spinning{animation:spin 1s linear infinite}
     @keyframes spin{to{transform:rotate(360deg)}}
 
-    .page{display:none;padding:0 20px 100px}
+    /* PAGES */
+    .page{display:none;padding:0 16px 100px}
     .page.active{display:block}
 
-    .card{background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:12px}
-    .card-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px}
-    .auto-tag{font-family:'Syne',sans-serif;font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;padding:4px 10px;border-radius:6px}
-    .tag-negro{background:#222;color:#c8c8c8;border:1px solid #444}
-    .tag-blanco{background:#f5f5f5;color:#111}
+    /* SECTION TITLE */
+    .stitle{font-family:'Syne',sans-serif;font-size:10px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);margin:18px 0 8px}
 
-    .metric-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-    .metric{background:var(--surface2);border-radius:10px;padding:12px}
-    .metric-label{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-bottom:4px;font-family:'DM Mono',monospace}
-    .metric-value{font-family:'DM Mono',monospace;font-size:15px;font-weight:500;color:var(--accent)}
+    /* CARD */
+    .card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:10px;overflow:hidden}
 
-    /* Ganancias */
-    .gan-row{display:flex;gap:10px;margin-bottom:10px}
-    .gan-card{flex:1;background:var(--surface2);border-radius:12px;padding:14px;text-align:center}
-    .gan-label{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);font-family:'DM Mono',monospace;margin-bottom:6px}
-    .gan-value{font-family:'DM Mono',monospace;font-size:16px;font-weight:500;color:var(--ok)}
-    .gan-total{background:linear-gradient(135deg,#0d1f0d,#0a0a0a);border:1px solid #1a3a1a;border-radius:12px;padding:16px;display:flex;justify-content:space-between;align-items:center;margin-bottom:12px}
-    .gan-total-label{font-size:12px;color:var(--muted);font-family:'DM Mono',monospace}
-    .gan-total-value{font-family:'DM Mono',monospace;font-size:20px;font-weight:500;color:var(--ok)}
+    /* AUTO TAG */
+    .auto-tag{font-family:'Syne',sans-serif;font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;padding:3px 10px;border-radius:5px;display:inline-block}
+    .tag-negro{background:#1c1c1c;color:#bbb;border:1px solid #3a3a3a}
+    .tag-blanco{background:#f0f0f0;color:#111}
 
-    /* Deudas */
-    .deuda-section{margin-top:14px}
-    .deuda-chofer{margin-bottom:10px}
-    .deuda-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+    /* GANANCIAS TOTALES */
+    .total-banner{background:linear-gradient(135deg,#0f1f0f,#0a0a0a);border:1px solid #1e3a1e;border-radius:14px;padding:16px 18px;display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+    .total-label{font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
+    .total-value{font-family:'DM Mono',monospace;font-size:22px;font-weight:500;color:var(--ok)}
+
+    /* MÉTRICAS */
+    .metric-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px}
+    .metric{background:var(--surface2);border-radius:10px;padding:11px 13px}
+    .metric-label{font-size:9px;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-bottom:3px;font-family:'DM Mono',monospace}
+    .metric-value{font-family:'DM Mono',monospace;font-size:14px;font-weight:500;color:var(--accent)}
+
+    /* GANANCIAS POR AUTO */
+    .gan-row{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0 0}
+    .gan-cell{background:var(--surface2);border-radius:10px;padding:11px 13px}
+    .gan-label{font-size:9px;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-bottom:3px;font-family:'DM Mono',monospace}
+    .gan-value{font-family:'DM Mono',monospace;font-size:14px;font-weight:500;color:var(--ok)}
+
+    /* ── DEUDAS CALENDAR ── */
+    .deuda-block{margin-top:14px}
+    .deuda-chofer-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
     .deuda-nombre{font-size:13px;font-weight:600}
-    .deuda-count{font-family:'DM Mono',monospace;font-size:11px;padding:2px 8px;border-radius:5px;background:#2b0d0d;color:var(--danger)}
-    .deuda-count.ok{background:#0d2b18;color:var(--ok)}
-    .dias-grid{display:flex;flex-wrap:wrap;gap:5px}
-    .dia-chip{font-family:'DM Mono',monospace;font-size:11px;padding:4px 8px;border-radius:6px;background:#2b0d0d;color:var(--danger);border:1px solid #3a1010}
-    .dia-chip.franco{background:#1a1a00;color:var(--warn);border-color:#3a3a00}
-
-    /* Mantenimiento */
-    .mant-list{margin-top:14px;display:flex;flex-direction:column;gap:8px}
-    .mant-item{display:flex;align-items:center;justify-content:space-between;padding:10px 14px;background:var(--surface2);border-radius:10px;cursor:pointer;transition:opacity 0.15s}
-    .mant-item:active{opacity:0.7}
-    .mant-nombre{font-size:13px;font-weight:500}
-    .mant-faltan{font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);margin-top:2px}
-    .badge{font-size:10px;font-weight:700;padding:3px 8px;border-radius:5px;text-transform:uppercase;letter-spacing:0.5px}
+    .deuda-badge{font-family:'DM Mono',monospace;font-size:10px;font-weight:700;padding:3px 9px;border-radius:5px}
+    .badge-deuda{background:#2b0d0d;color:var(--danger)}
     .badge-ok{background:#0d2b18;color:var(--ok)}
-    .badge-cambiar{background:#2b0d0d;color:var(--danger)}
 
-    .section-title{font-family:'Syne',sans-serif;font-size:11px;font-weight:800;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin:20px 0 10px}
+    /* Calendario de deudas */
+    .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;margin-bottom:14px}
+    .cal-header{text-align:center;font-family:'DM Mono',monospace;font-size:9px;color:var(--muted);padding:2px 0;font-weight:500}
+    .cal-day{
+      aspect-ratio:1;border-radius:6px;display:flex;align-items:center;justify-content:center;
+      font-family:'DM Mono',monospace;font-size:11px;font-weight:500;
+      background:var(--surface2);color:var(--muted);
+    }
+    .cal-day.debe{background:#2b0d0d;color:var(--danger);border:1px solid #4a1515;font-weight:700}
+    .cal-day.pago{background:#0d2b18;color:var(--ok)}
+    .cal-day.franco{background:#1a1500;color:#888;font-style:italic}
+    .cal-day.hoy{outline:2px solid var(--accent);outline-offset:1px}
+    .cal-day.futuro{opacity:0.25}
+    .cal-day.vacio{background:transparent}
+    .cal-month{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin-bottom:6px;text-transform:uppercase;letter-spacing:1px}
 
-    /* Turnos */
-    .chofer-row{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:var(--surface);border:1px solid var(--border);border-radius:12px;margin-bottom:8px}
-    .chofer-info{display:flex;flex-direction:column;gap:2px}
-    .chofer-nombre{font-weight:500;font-size:15px}
-    .chofer-auto{font-size:12px;color:var(--muted)}
-    .chofer-deuda{font-size:11px;color:var(--danger);margin-top:2px;font-family:'DM Mono',monospace}
-    .turno-btns{display:flex;gap:8px}
-    .turno-btn{padding:8px 14px;border-radius:8px;border:1px solid var(--border);background:var(--surface2);color:var(--text);font-family:'DM Mono',monospace;font-size:12px;font-weight:500;cursor:pointer;transition:all 0.15s}
-    .turno-btn:active{transform:scale(0.95)}
+    /* MANTENIMIENTO */
+    .mant-list{display:flex;flex-direction:column;gap:6px;margin-top:12px}
+    .mant-item{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:var(--surface2);border-radius:10px;cursor:pointer;transition:opacity 0.15s;-webkit-tap-highlight-color:rgba(255,255,255,0.05)}
+    .mant-item:active{opacity:0.6}
+    .mant-nombre{font-size:13px;font-weight:500}
+    .mant-faltan{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin-top:2px}
+    .mbadge{font-size:10px;font-weight:700;padding:3px 8px;border-radius:5px;text-transform:uppercase}
+    .mbadge-ok{background:#0d2b18;color:var(--ok)}
+    .mbadge-cambiar{background:#2b0d0d;color:var(--danger)}
+
+    .divider{height:1px;background:var(--border);margin:14px 0}
+
+    /* TURNOS */
+    .chofer-row{display:flex;align-items:center;justify-content:space-between;padding:13px 14px;background:var(--surface);border:1px solid var(--border);border-radius:12px;margin-bottom:8px}
+    .chofer-info .nombre{font-weight:500;font-size:14px}
+    .chofer-info .sub{font-size:11px;color:var(--muted);margin-top:1px}
+    .chofer-info .deuda-hint{font-size:10px;color:var(--danger);margin-top:2px;font-family:'DM Mono',monospace}
+    .turno-btns{display:flex;gap:6px}
+    .turno-btn{padding:8px 12px;border-radius:8px;border:1px solid var(--border);background:var(--surface2);color:var(--text);font-family:'DM Mono',monospace;font-size:12px;font-weight:500;cursor:pointer;transition:all 0.15s}
+    .turno-btn:active{transform:scale(0.94)}
     .turno-btn.full{background:var(--accent);color:#000;border-color:var(--accent);font-weight:700}
     .turno-btn.medio{background:#1a1a00;color:var(--accent);border-color:#3a3a00}
 
-    .fecha-selector{display:flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:12px 16px;margin-bottom:16px}
-    .fecha-selector span{font-size:13px;color:var(--muted);flex-shrink:0}
-    .fecha-selector input[type=date]{background:transparent;border:none;color:var(--text);font-family:'DM Mono',monospace;font-size:14px;outline:none;flex:1;color-scheme:dark}
+    .fecha-sel{display:flex;align-items:center;gap:10px;background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:11px 14px;margin-bottom:14px}
+    .fecha-sel span{font-size:13px;color:var(--muted);flex-shrink:0}
+    .fecha-sel input[type=date]{background:transparent;border:none;color:var(--text);font-family:'DM Mono',monospace;font-size:14px;outline:none;flex:1;color-scheme:dark}
 
-    /* Form */
-    .form-group{margin-bottom:12px}
-    .form-label{font-size:11px;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);font-family:'DM Mono',monospace;display:block;margin-bottom:6px}
-    .form-input{width:100%;padding:14px 16px;background:var(--surface);border:1px solid var(--border);border-radius:12px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;outline:none;transition:border-color 0.2s;-webkit-appearance:none}
-    .form-input:focus{border-color:var(--accent)}
-    .form-input::placeholder{color:var(--muted)}
-    .radio-group{display:flex;gap:8px}
-    .radio-option{flex:1;padding:12px;border-radius:10px;border:1px solid var(--border);background:var(--surface);text-align:center;cursor:pointer;transition:all 0.15s}
-    .radio-option.selected{border-color:var(--accent);background:#1a1a00}
-    .radio-option input{display:none}
-    .radio-label{font-size:13px;font-weight:500;pointer-events:none}
-    .radio-sub{font-size:11px;color:var(--muted);pointer-events:none}
+    .kms-row{display:flex;gap:8px;align-items:center}
+    .kms-input{flex:1;padding:10px 13px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:'DM Mono',monospace;font-size:14px;outline:none;-webkit-appearance:none}
+    .kms-input:focus{border-color:var(--accent)}
+    .kms-btn{padding:10px 16px;background:var(--accent);color:#000;border:none;border-radius:10px;font-weight:700;font-size:13px;cursor:pointer}
 
-    .btn-primary{width:100%;padding:16px;background:var(--accent);color:#000;border:none;border-radius:14px;font-family:'Syne',sans-serif;font-size:15px;font-weight:800;letter-spacing:0.5px;cursor:pointer;margin-top:8px;transition:transform 0.15s,opacity 0.15s}
-    .btn-primary:active{transform:scale(0.98);opacity:0.9}
-    .btn-primary:disabled{opacity:0.4;cursor:not-allowed}
-    .btn-secondary{width:100%;padding:14px;background:transparent;color:var(--text);border:1px solid var(--border);border-radius:14px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;margin-top:8px}
+    /* GASTOS */
+    .tabs{display:flex;gap:6px;margin-bottom:16px}
+    .tab{flex:1;padding:10px;border-radius:10px;border:1px solid var(--border);background:transparent;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;text-align:center;transition:all 0.2s}
+    .tab.active{background:var(--accent);color:#000;border-color:var(--accent);font-weight:700}
 
-    /* Gastos */
-    .gasto-item{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:var(--surface);border:1px solid var(--border);border-radius:12px;margin-bottom:8px}
+    .gasto-item{display:flex;align-items:center;justify-content:space-between;padding:13px 14px;background:var(--surface);border:1px solid var(--border);border-radius:12px;margin-bottom:8px}
     .gasto-desc{font-size:14px;font-weight:500}
     .gasto-auto{font-size:11px;color:var(--muted);margin-top:2px}
-    .gasto-monto{font-family:'DM Mono',monospace;font-size:14px;color:var(--accent2);font-weight:500}
+    .gasto-monto{font-family:'DM Mono',monospace;font-size:14px;color:var(--accent2);font-weight:500;white-space:nowrap;margin-left:10px}
 
-    /* Config */
-    .config-row{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:var(--surface);border:1px solid var(--border);border-radius:12px;margin-bottom:8px}
+    /* FORM */
+    .form-label{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);font-family:'DM Mono',monospace;display:block;margin-bottom:6px}
+    .form-input{width:100%;padding:13px 14px;background:var(--surface);border:1px solid var(--border);border-radius:12px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;outline:none;-webkit-appearance:none;transition:border-color 0.2s}
+    .form-input:focus{border-color:var(--accent)}
+    .form-input::placeholder{color:var(--muted)}
+    .form-group{margin-bottom:12px}
+    .radio-group{display:flex;gap:8px}
+    .radio-opt{flex:1;padding:11px;border-radius:10px;border:1px solid var(--border);background:var(--surface);text-align:center;cursor:pointer;transition:all 0.15s}
+    .radio-opt.sel{border-color:var(--accent);background:#1a1a00}
+    .radio-opt .rl{font-size:13px;font-weight:500}
+    .radio-opt .rs{font-size:11px;color:var(--muted)}
+
+    .btn-primary{width:100%;padding:15px;background:var(--accent);color:#000;border:none;border-radius:13px;font-family:'Syne',sans-serif;font-size:15px;font-weight:800;cursor:pointer;margin-top:8px;transition:transform 0.15s,opacity 0.15s}
+    .btn-primary:active{transform:scale(0.98);opacity:0.9}
+    .btn-secondary{width:100%;padding:13px;background:transparent;color:var(--text);border:1px solid var(--border);border-radius:13px;font-family:'DM Sans',sans-serif;font-size:14px;cursor:pointer;margin-top:8px}
+
+    /* CONFIG */
+    .config-row{display:flex;align-items:center;justify-content:space-between;padding:13px 14px;background:var(--surface);border:1px solid var(--border);border-radius:12px;margin-bottom:8px}
     .config-label{font-size:14px;font-weight:500}
-    .config-sub{font-size:12px;color:var(--muted);margin-top:2px}
-    select.form-input{cursor:pointer}
+    .config-sub{font-size:11px;color:var(--muted);margin-top:2px}
 
-    /* Kms input inline */
-    .kms-row{display:flex;gap:8px;align-items:center}
-    .kms-row input{flex:1;padding:10px 14px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:'DM Mono',monospace;font-size:14px;outline:none;-webkit-appearance:none}
-    .kms-row input:focus{border-color:var(--accent)}
-    .kms-btn{padding:10px 16px;background:var(--accent);color:#000;border:none;border-radius:10px;font-weight:700;font-size:13px;cursor:pointer;white-space:nowrap}
-
-    /* Toast */
-    .toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:12px 20px;border-radius:12px;font-size:13px;font-weight:500;opacity:0;transition:all 0.3s;z-index:999;white-space:nowrap;max-width:90vw;text-align:center}
+    /* TOAST */
+    .toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:11px 18px;border-radius:12px;font-size:13px;font-weight:500;opacity:0;transition:all 0.3s;z-index:999;white-space:nowrap;max-width:92vw;text-align:center}
     .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
     .toast.success{border-color:var(--ok);color:var(--ok)}
     .toast.error{border-color:var(--danger);color:var(--danger)}
 
-    /* Bottom nav */
-    .bottom-nav{position:fixed;bottom:0;left:0;right:0;display:flex;background:rgba(10,10,10,0.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--border);padding:8px 0 24px;z-index:200}
-    .bnav-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 0;background:none;border:none;cursor:pointer;color:var(--muted);transition:color 0.2s}
+    /* BOTTOM NAV */
+    .bottom-nav{position:fixed;bottom:0;left:0;right:0;display:flex;background:rgba(10,10,10,0.94);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--border);padding:8px 0 24px;z-index:200}
+    .bnav-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:5px 0;background:none;border:none;cursor:pointer;color:var(--muted);transition:color 0.2s}
     .bnav-btn.active{color:var(--accent)}
-    .bnav-btn svg{width:22px;height:22px}
-    .bnav-label{font-size:10px;font-weight:500;letter-spacing:0.3px}
+    .bnav-btn svg{width:21px;height:21px}
+    .bnav-label{font-size:9px;font-weight:500;letter-spacing:0.3px}
+
+    /* MODAL */
+    .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.82);z-index:500;display:flex;align-items:flex-end}
+    .modal-sheet{background:var(--surface);border-radius:20px 20px 0 0;width:100%;padding:22px 18px 42px}
+    .modal-title{font-family:'Syne',sans-serif;font-size:17px;font-weight:800;margin-bottom:4px}
+    .modal-sub{font-size:13px;color:var(--muted);margin-bottom:18px}
 
     .loading{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 20px;gap:12px;color:var(--muted);font-size:13px}
-    .spinner{width:28px;height:28px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin 0.8s linear infinite}
+    .spinner{width:26px;height:26px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin 0.8s linear infinite}
 
-    .alert-banner{background:#1a0505;border:1px solid #3a1010;border-radius:12px;padding:12px 16px;margin-bottom:12px;display:flex;align-items:center;gap:10px}
-    .alert-icon{font-size:18px;flex-shrink:0}
-    .alert-text{font-size:13px;line-height:1.4}
-    .alert-auto{font-weight:700;color:var(--danger)}
-
-    .divider{height:1px;background:var(--border);margin:16px 0}
+    select.form-input{cursor:pointer}
   </style>
 </head>
 <body>
@@ -158,7 +180,6 @@
 <div class="page active" id="page-dashboard"></div>
 <div class="page" id="page-turnos"></div>
 <div class="page" id="page-gastos"></div>
-<div class="page" id="page-agregar"></div>
 <div class="page" id="page-config"></div>
 
 <nav class="bottom-nav">
@@ -174,10 +195,6 @@
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
     <span class="bnav-label">Gastos</span>
   </button>
-  <button class="bnav-btn" onclick="showPage('agregar',this)">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
-    <span class="bnav-label">Agregar</span>
-  </button>
   <button class="bnav-btn" onclick="showPage('config',this)">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M19.07 4.93a10 10 0 0 1 0 14.14M4.93 4.93a10 10 0 0 0 0 14.14"/></svg>
     <span class="bnav-label">Config</span>
@@ -187,25 +204,21 @@
 <div class="toast" id="toast"></div>
 
 <script>
-const API_BASE = "https://flota-backend-production.up.railway.app";
-const API_KEY  = "flota2026xK9";
+const API_BASE = "REEMPLAZAR_CON_URL_RAILWAY";
+const API_KEY  = "REEMPLAZAR_CON_API_KEY";
 
-const DIAS = ["Lun","Mar","Mié","Jue","Vie","Sáb","Dom"];
-const DIAS_FULL = ["Lunes","Martes","Miércoles","Jueves","Viernes","Sábado","Domingo"];
+const DIAS_CORTOS = ["Lu","Ma","Mi","Ju","Vi","Sa","Do"];
+const DIAS_FULL   = ["Lunes","Martes","Miércoles","Jueves","Viernes","Sábado","Domingo"];
+const MESES       = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
 
 let cachedData = null;
 
 // ── UTILS ──────────────────────────────────────────────────────────────────────
 function fmt(n) {
-  if (!n && n !== 0) return "—";
+  if (n === null || n === undefined) return "—";
   const num = typeof n === "number" ? n : parseFloat(String(n).replace(/[^0-9.-]/g,""));
   if (isNaN(num)) return String(n);
   return "$" + num.toLocaleString("es-AR");
-}
-
-function fmtFecha(iso) {
-  const [y,m,d] = iso.split("-");
-  return `${d}/${m}`;
 }
 
 function today() { return new Date().toISOString().split("T")[0]; }
@@ -221,7 +234,7 @@ function showPage(name, btn) {
   document.querySelectorAll(".bnav-btn").forEach(b => b.classList.remove("active"));
   document.getElementById("page-"+name).classList.add("active");
   if (btn) btn.classList.add("active");
-  if (name === "gastos") renderGastos();
+  if (name === "gastos") renderGastosPage();
   if (name === "config") renderConfig();
 }
 
@@ -252,50 +265,43 @@ async function loadData() {
 // ── DASHBOARD ──────────────────────────────────────────────────────────────────
 function renderDashboard() {
   if (!cachedData) return;
-  const container = document.getElementById("page-dashboard");
+  const el = document.getElementById("page-dashboard");
+  const tot = cachedData.totales || {};
   let html = "";
 
-  // Totales generales
-  const tot = cachedData.totales || {};
+  // Banner totales
   html += `
-    <div class="section-title">Total flota</div>
-    <div class="gan-total">
-      <div><div class="gan-total-label">Esta semana</div><div class="gan-total-value">${fmt(tot.semana||0)}</div></div>
-      <div style="text-align:right"><div class="gan-total-label">Este mes</div><div class="gan-total-value">${fmt(tot.mes||0)}</div></div>
+    <div class="stitle">Total flota</div>
+    <div class="total-banner">
+      <div><div class="total-label">Esta semana</div><div class="total-value">${fmt(tot.semana||0)}</div></div>
+      <div style="text-align:right"><div class="total-label">Este mes</div><div class="total-value">${fmt(tot.mes||0)}</div></div>
     </div>`;
 
-  // Alertas de mantenimiento
+  // Alertas críticas
   for (const [key, data] of Object.entries(cachedData)) {
     if (!data.mantenimiento) continue;
-    data.mantenimiento.filter(m => m.estado === "CAMBIAR").forEach(m => {
-      html += `<div class="alert-banner"><span class="alert-icon">⚠️</span>
-        <div class="alert-text"><span class="alert-auto">${data.nombre}</span> — ${m.trabajo} necesita cambio</div></div>`;
+    data.mantenimiento.filter(m=>m.estado==="CAMBIAR").forEach(m=>{
+      html += `<div style="background:#1a0505;border:1px solid #3a1010;border-radius:12px;padding:11px 14px;margin-bottom:8px;display:flex;gap:10px;align-items:center">
+        <span>⚠️</span><span style="font-size:13px"><b style="color:var(--danger)">${data.nombre}</b> — ${m.trabajo} necesita cambio</span></div>`;
     });
   }
 
   // Por auto
   for (const [key, data] of Object.entries(cachedData)) {
-    if (!data.nombre || data.error) continue;
-    const tagClass = key === "negro" ? "tag-negro" : "tag-blanco";
+    if (!data.nombre) continue;
+    const tagClass = key==="negro" ? "tag-negro" : "tag-blanco";
     const gan = data.ganancias || {};
-    const deudas = data.deudas || {};
-    const choferes = data.choferes || {};
+    const ch  = data.choferes  || {};
 
     html += `<div class="card">
-      <div class="card-header">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
         <span class="auto-tag ${tagClass}">${data.nombre}</span>
-        <span style="font-size:12px;color:var(--muted)">${Object.values(choferes).join(" · ")}</span>
+        <span style="font-size:11px;color:var(--muted)">${Object.values(ch).join(" · ")}</span>
       </div>
 
       <div class="gan-row">
-        <div class="gan-card">
-          <div class="gan-label">Semana</div>
-          <div class="gan-value">${fmt(gan.semana?.total||0)}</div>
-        </div>
-        <div class="gan-card">
-          <div class="gan-label">Mes</div>
-          <div class="gan-value">${fmt(gan.mes?.total||0)}</div>
-        </div>
+        <div class="gan-cell"><div class="gan-label">Semana</div><div class="gan-value">${fmt(gan.semana?.total||0)}</div></div>
+        <div class="gan-cell"><div class="gan-label">Mes</div><div class="gan-value">${fmt(gan.mes?.total||0)}</div></div>
       </div>
 
       <div class="metric-grid">
@@ -305,48 +311,83 @@ function renderDashboard() {
         <div class="metric"><div class="metric-label">Kms</div><div class="metric-value" style="color:var(--text)">${data.kms_actuales||"—"}</div></div>
       </div>
 
-      ${renderDeudas(deudas, choferes)}
-      ${renderMantCard(data.mantenimiento, key)}
+      <div class="divider"></div>
+      ${renderDeudaCalendario(data.deudas||{}, ch, cachedData.franco_weekday??1)}
+      ${renderMantCard(data.mantenimiento||[], key)}
     </div>`;
   }
 
-  container.innerHTML = html;
+  el.innerHTML = html;
 }
 
-function renderDeudas(deudas, choferes) {
-  if (!deudas) return "";
-  let html = `<div class="divider"></div><div class="section-title" style="margin-top:0">Días adeudados</div><div class="deuda-section">`;
+// ── CALENDARIO DE DEUDAS ───────────────────────────────────────────────────────
+function renderDeudaCalendario(deudas, choferes, francoWeekday) {
+  const now   = new Date();
+  const todayStr = today();
+  const year  = now.getFullYear();
+  const month = now.getMonth(); // 0-indexed
+  const daysInMonth = new Date(year, month+1, 0).getDate();
+
+  // Primer día de la semana del mes (0=dom..6=sab → convertir a lun=0)
+  let firstDow = new Date(year, month, 1).getDay(); // 0=dom
+  firstDow = (firstDow + 6) % 7; // convertir a lun=0
+
+  let html = `<div class="stitle">Deudas — ${MESES[month]}</div>`;
+
   for (const [col, nombre] of Object.entries(choferes)) {
-    const dias = deudas[col] || [];
-    html += `<div class="deuda-chofer">
-      <div class="deuda-header">
+    const deudasCol = deudas[col] || [];
+    const totalDeuda = deudasCol.length;
+
+    html += `<div class="deuda-block">
+      <div class="deuda-chofer-header">
         <span class="deuda-nombre">${nombre}</span>
-        <span class="deuda-count ${dias.length===0?'ok':''}">${dias.length===0?"Al día":dias.length+" días"}</span>
-      </div>`;
-    if (dias.length > 0) {
-      html += `<div class="dias-grid">` + dias.map(d =>
-        `<span class="dia-chip">${fmtFecha(d)}</span>`
-      ).join("") + `</div>`;
+        <span class="deuda-badge ${totalDeuda===0?'badge-ok':'badge-deuda'}">${totalDeuda===0?"Al día":totalDeuda+" día"+(totalDeuda>1?"s":"")}</span>
+      </div>
+      <div class="cal-grid">`;
+
+    // Headers días
+    DIAS_CORTOS.forEach(d => html += `<div class="cal-header">${d}</div>`);
+
+    // Celdas vacías antes del día 1
+    for (let i=0; i<firstDow; i++) html += `<div class="cal-day vacio"></div>`;
+
+    // Días del mes
+    for (let day=1; day<=daysInMonth; day++) {
+      const dateStr = `${year}-${String(month+1).padStart(2,"0")}-${String(day).padStart(2,"0")}`;
+      const dow = (new Date(year, month, day).getDay() + 6) % 7; // lun=0
+      const isFuturo  = dateStr > todayStr;
+      const isToday   = dateStr === todayStr;
+      const isFranco  = dow === francoWeekday;
+      const isDebe    = deudasCol.includes(dateStr);
+
+      let cls = "cal-day";
+      if (isFuturo)       cls += " futuro";
+      else if (isFranco)  cls += " franco";
+      else if (isDebe)    cls += " debe";
+      else if (!isFuturo) cls += " pago";
+      if (isToday)        cls += " hoy";
+
+      html += `<div class="${cls}">${day}</div>`;
     }
-    html += `</div>`;
+
+    html += `</div></div>`; // close cal-grid + deuda-block
   }
-  return html + `</div>`;
+
+  return html;
 }
 
 function renderMantCard(items, autoKey) {
-  if (!items || !items.length) return "";
+  if (!items.length) return "";
   return `<div class="divider"></div>
-    <div class="section-title" style="margin-top:0">Mantenimiento</div>
+    <div class="stitle" style="margin-top:0">Mantenimiento</div>
     <div class="mant-list">
-      ${items.map((m, i) => `
-        <div class="mant-item" onclick="showMantModal('${autoKey}',${i+4},'${m.trabajo}')">
+      ${items.map(m=>`
+        <div class="mant-item" onclick="showMantModal('${autoKey}',${m.fila},'${m.trabajo}')">
           <div>
             <div class="mant-nombre">${m.trabajo}</div>
             ${m.faltan ? `<div class="mant-faltan">Faltan ${m.faltan} km</div>` : ""}
           </div>
-          <span class="badge ${m.estado==='CAMBIAR'?'badge-cambiar':'badge-ok'}">
-            ${m.estado==='CAMBIAR'?'⚠ CAMBIAR':'✓ OK'}
-          </span>
+          <span class="mbadge ${m.estado==='CAMBIAR'?'mbadge-cambiar':'mbadge-ok'}">${m.estado==='CAMBIAR'?'⚠ CAMBIAR':'✓ OK'}</span>
         </div>`).join("")}
     </div>`;
 }
@@ -354,73 +395,57 @@ function renderMantCard(items, autoKey) {
 // ── MODAL MANTENIMIENTO ────────────────────────────────────────────────────────
 function showMantModal(autoKey, fila, trabajo) {
   const autoNombre = cachedData[autoKey]?.nombre || autoKey;
-  const kmsAct = cachedData[autoKey]?.kms_actuales || "";
-  const modal = document.createElement("div");
-  modal.style.cssText = "position:fixed;inset:0;background:rgba(0,0,0,0.8);z-index:500;display:flex;align-items:flex-end";
-  modal.innerHTML = `
-    <div style="background:var(--surface);border-radius:20px 20px 0 0;width:100%;padding:24px 20px 40px">
-      <div style="font-family:'Syne',sans-serif;font-size:18px;font-weight:800;margin-bottom:4px">${trabajo}</div>
-      <div style="font-size:13px;color:var(--muted);margin-bottom:20px">${autoNombre}</div>
-      <div class="form-label">Kms actuales al realizar el service</div>
-      <div class="kms-row" style="margin-bottom:16px">
-        <input type="number" inputmode="numeric" id="modalKms" value="${kmsAct}" placeholder="Ej: 45000">
+  const kmsAct     = cachedData[autoKey]?.kms_actuales || "";
+  const m = document.createElement("div");
+  m.className = "modal-overlay";
+  m.innerHTML = `
+    <div class="modal-sheet">
+      <div class="modal-title">${trabajo}</div>
+      <div class="modal-sub">${autoNombre}</div>
+      <label class="form-label">Kms al momento del service</label>
+      <div style="margin-bottom:16px">
+        <input class="form-input" type="number" inputmode="numeric" id="modalKms" value="${kmsAct}" placeholder="Ej: 45000">
       </div>
       <button class="btn-primary" onclick="confirmarMant('${autoKey}',${fila},this)">✓ MARCAR COMO REALIZADO</button>
-      <button class="btn-secondary" onclick="this.closest('[style]').remove()">Cancelar</button>
+      <button class="btn-secondary" onclick="this.closest('.modal-overlay').remove()">Cancelar</button>
     </div>`;
-  modal.onclick = e => { if(e.target===modal) modal.remove(); };
-  document.body.appendChild(modal);
+  m.onclick = e => { if(e.target===m) m.remove(); };
+  document.body.appendChild(m);
 }
 
 async function confirmarMant(autoKey, fila, btn) {
   const kms = document.getElementById("modalKms")?.value;
-  btn.disabled = true; btn.textContent = "Guardando...";
+  btn.disabled=true; btn.textContent="Guardando...";
   try {
-    const res = await apiFetch("/mantenimiento", {
-      method:"POST",
-      body: JSON.stringify({auto: autoKey, fila, kms_actuales: kms ? parseInt(kms) : null})
-    });
-    if (res.ok) {
-      showToast("✓ Mantenimiento registrado", "success");
-      btn.closest("[style]").remove();
-      loadData();
-    } else {
-      showToast("⚠ " + (res.error||"Error"), "error");
-      btn.disabled = false; btn.textContent = "✓ MARCAR COMO REALIZADO";
-    }
-  } catch(e) {
-    showToast("⚠ Error de conexión", "error");
-    btn.disabled = false; btn.textContent = "✓ MARCAR COMO REALIZADO";
-  }
+    const res = await apiFetch("/mantenimiento",{method:"POST",body:JSON.stringify({auto:autoKey,fila,kms_actuales:kms?parseInt(kms):null})});
+    if(res.ok){ showToast("✓ Mantenimiento registrado","success"); btn.closest(".modal-overlay").remove(); loadData(); }
+    else { showToast("⚠ "+(res.error||"Error"),"error"); btn.disabled=false; btn.textContent="✓ MARCAR COMO REALIZADO"; }
+  } catch(e){ showToast("⚠ Error de conexión","error"); btn.disabled=false; btn.textContent="✓ MARCAR COMO REALIZADO"; }
 }
 
 // ── TURNOS ─────────────────────────────────────────────────────────────────────
 function renderTurnos() {
-  const container = document.getElementById("page-turnos");
-  if (!cachedData) { container.innerHTML=`<div class="loading"><div class="spinner"></div></div>`; return; }
+  const el = document.getElementById("page-turnos");
+  if (!cachedData) { el.innerHTML=`<div class="loading"><div class="spinner"></div></div>`; return; }
 
   const choferes = [];
   for (const [key, data] of Object.entries(cachedData)) {
     if (!data.choferes) continue;
     for (const [col, nombre] of Object.entries(data.choferes)) {
-      const deudas = data.deudas?.[col] || [];
-      choferes.push({auto:key, nombre, col, autoNombre:data.nombre, deudas});
+      choferes.push({auto:key, nombre, col, autoNombre:data.nombre, deudas:data.deudas?.[col]||[]});
     }
   }
 
-  container.innerHTML = `
-    <div class="section-title">Fecha</div>
-    <div class="fecha-selector">
-      <span>📅</span>
-      <input type="date" id="turnoFecha" value="${today()}">
-    </div>
-    <div class="section-title">Registrar turno</div>
-    ${choferes.map(c => `
+  el.innerHTML = `
+    <div class="stitle">Fecha</div>
+    <div class="fecha-sel"><span>📅</span><input type="date" id="turnoFecha" value="${today()}"></div>
+    <div class="stitle">Registrar turno</div>
+    ${choferes.map(c=>`
       <div class="chofer-row">
         <div class="chofer-info">
-          <span class="chofer-nombre">${c.nombre}</span>
-          <span class="chofer-auto">${c.autoNombre}</span>
-          ${c.deudas.length > 0 ? `<span class="chofer-deuda">⚠ ${c.deudas.length} día${c.deudas.length>1?'s':''} adeudado${c.deudas.length>1?'s':''}</span>` : ""}
+          <div class="nombre">${c.nombre}</div>
+          <div class="sub">${c.autoNombre}</div>
+          ${c.deudas.length>0?`<div class="deuda-hint">⚠ ${c.deudas.length} día${c.deudas.length>1?"s":""} adeudado${c.deudas.length>1?"s":""}</div>`:""}
         </div>
         <div class="turno-btns">
           <button class="turno-btn medio" onclick="registrarTurno('${c.auto}','${c.col}',25,'${c.nombre}')">½</button>
@@ -428,15 +453,15 @@ function renderTurnos() {
         </div>
       </div>`).join("")}
 
-    <div class="section-title" style="margin-top:24px">Actualizar kms</div>
-    ${Object.entries(cachedData).filter(([k,v])=>v.nombre).map(([key, data]) => `
+    <div class="stitle" style="margin-top:22px">Actualizar kms</div>
+    ${Object.entries(cachedData).filter(([k,v])=>v.nombre).map(([key,data])=>`
       <div class="chofer-row">
         <div class="chofer-info">
-          <span class="chofer-nombre">${data.nombre}</span>
-          <span class="chofer-auto">Actual: ${data.kms_actuales||"—"} km</span>
+          <div class="nombre">${data.nombre}</div>
+          <div class="sub">Actual: ${data.kms_actuales||"—"} km</div>
         </div>
-        <div class="kms-row" style="width:160px">
-          <input type="number" inputmode="numeric" id="kms_${key}" placeholder="km" style="padding:8px 10px;font-size:13px">
+        <div class="kms-row" style="width:150px">
+          <input class="kms-input" type="number" inputmode="numeric" id="kms_${key}" placeholder="km">
           <button class="kms-btn" onclick="actualizarKms('${key}')">OK</button>
         </div>
       </div>`).join("")}`;
@@ -445,118 +470,132 @@ function renderTurnos() {
 async function registrarTurno(auto, col, valor, nombre) {
   const fecha = document.getElementById("turnoFecha")?.value || today();
   try {
-    const res = await apiFetch("/turno", {method:"POST", body:JSON.stringify({auto,col,valor,fecha})});
-    if (res.ok) { showToast("✓ "+res.mensaje, "success"); loadData(); }
-    else showToast("⚠ "+(res.error||"Error"), "error");
-  } catch(e) { showToast("⚠ Error de conexión","error"); }
+    const res = await apiFetch("/turno",{method:"POST",body:JSON.stringify({auto,col,valor,fecha})});
+    if(res.ok){ showToast("✓ "+res.mensaje,"success"); loadData(); }
+    else showToast("⚠ "+(res.error||"Error"),"error");
+  } catch(e){ showToast("⚠ Error de conexión","error"); }
 }
 
 async function actualizarKms(auto) {
   const kms = document.getElementById("kms_"+auto)?.value;
-  if (!kms) { showToast("Ingresá los kms","error"); return; }
+  if (!kms){ showToast("Ingresá los kms","error"); return; }
   try {
-    const res = await apiFetch("/kms", {method:"POST", body:JSON.stringify({auto, kms:parseInt(kms)})});
-    if (res.ok) { showToast("✓ "+res.mensaje, "success"); loadData(); }
+    const res = await apiFetch("/kms",{method:"POST",body:JSON.stringify({auto,kms:parseInt(kms)})});
+    if(res.ok){ showToast("✓ "+res.mensaje,"success"); loadData(); }
     else showToast("⚠ "+(res.error||"Error"),"error");
-  } catch(e) { showToast("⚠ Error de conexión","error"); }
+  } catch(e){ showToast("⚠ Error de conexión","error"); }
 }
 
-// ── GASTOS ─────────────────────────────────────────────────────────────────────
-async function renderGastos() {
-  const container = document.getElementById("page-gastos");
-  container.innerHTML = `<div class="loading"><div class="spinner"></div>Cargando gastos...</div>`;
+// ── GASTOS + AGREGAR (misma página con tabs) ───────────────────────────────────
+let gastoTab = "lista";
+let selectedAuto = "negro";
+
+async function renderGastosPage() {
+  const el = document.getElementById("page-gastos");
+  el.innerHTML = `
+    <div class="tabs">
+      <button class="tab ${gastoTab==='lista'?'active':''}" onclick="switchGastoTab('lista',this)">Ver gastos</button>
+      <button class="tab ${gastoTab==='nuevo'?'active':''}" onclick="switchGastoTab('nuevo',this)">+ Agregar</button>
+    </div>
+    <div id="gastoContent"></div>`;
+
+  if (gastoTab === "lista") renderGastoLista();
+  else renderGastoForm();
+}
+
+function switchGastoTab(tab, btn) {
+  gastoTab = tab;
+  document.querySelectorAll(".tabs .tab").forEach(b=>b.classList.remove("active"));
+  btn.classList.add("active");
+  if (tab==="lista") renderGastoLista();
+  else renderGastoForm();
+}
+
+async function renderGastoLista() {
+  const el = document.getElementById("gastoContent");
+  el.innerHTML = `<div class="loading"><div class="spinner"></div></div>`;
   try {
-    const [negro, blanco] = await Promise.all([
-      apiFetch("/gastos?auto=negro"), apiFetch("/gastos?auto=blanco")
-    ]);
+    const [negro, blanco] = await Promise.all([apiFetch("/gastos?auto=negro"), apiFetch("/gastos?auto=blanco")]);
     const all = [
-      ...(negro.gastos||[]).map(g=>({...g,autoNombre:"Prisma Negro"})),
-      ...(blanco.gastos||[]).map(g=>({...g,autoNombre:"Prisma Blanco"})),
+      ...(negro.gastos||[]).map(g=>({...g,autoNombre:"Prisma Negro",autoKey:"negro"})),
+      ...(blanco.gastos||[]).map(g=>({...g,autoNombre:"Prisma Blanco",autoKey:"blanco"})),
     ].reverse();
-    if (!all.length) { container.innerHTML=`<div class="loading">Sin gastos registrados</div>`; return; }
-    container.innerHTML = all.map(g=>`
+    if (!all.length){ el.innerHTML=`<div class="loading">Sin gastos registrados</div>`; return; }
+    el.innerHTML = all.map(g=>`
       <div class="gasto-item">
         <div><div class="gasto-desc">${g.descripcion}</div><div class="gasto-auto">${g.autoNombre}</div></div>
         <div class="gasto-monto">${g.monto||"—"}</div>
       </div>`).join("");
-  } catch(e) { container.innerHTML=`<div class="loading">⚠️ Error cargando gastos</div>`; }
+  } catch(e){ el.innerHTML=`<div class="loading">⚠️ Error</div>`; }
 }
 
-// ── AGREGAR ────────────────────────────────────────────────────────────────────
-let selectedAuto = "negro";
-document.getElementById("page-agregar").innerHTML = `
-  <div class="section-title">Auto</div>
-  <div class="radio-group" id="autoSelector">
-    <div class="radio-option selected" onclick="selectAuto('negro',this)">
-      <div class="radio-label">Prisma Negro</div><div class="radio-sub">Oscar · Luis</div>
+function renderGastoForm() {
+  const el = document.getElementById("gastoContent");
+  el.innerHTML = `
+    <div class="stitle">Auto</div>
+    <div class="radio-group" id="autoSel" style="margin-bottom:12px">
+      <div class="radio-opt ${selectedAuto==='negro'?'sel':''}" onclick="selectAuto('negro',this)">
+        <div class="rl">Prisma Negro</div><div class="rs">Oscar · Luis</div>
+      </div>
+      <div class="radio-opt ${selectedAuto==='blanco'?'sel':''}" onclick="selectAuto('blanco',this)">
+        <div class="rl">Prisma Blanco</div><div class="rs">Maxi · Javier</div>
+      </div>
     </div>
-    <div class="radio-option" onclick="selectAuto('blanco',this)">
-      <div class="radio-label">Prisma Blanco</div><div class="radio-sub">Maxi · Javier</div>
-    </div>
-  </div>
-  <div class="section-title" style="margin-top:20px">Descripción</div>
-  <div class="form-group">
-    <input class="form-input" id="gastoDesc" type="text" placeholder="Ej: Aceite y filtros" autocomplete="off">
-  </div>
-  <div class="section-title">Monto</div>
-  <div class="form-group">
-    <input class="form-input" id="gastoMonto" type="number" inputmode="numeric" placeholder="0" style="font-family:'DM Mono',monospace">
-  </div>
-  <button class="btn-primary" onclick="submitGasto()">REGISTRAR GASTO</button>`;
+    <div class="stitle">Descripción</div>
+    <div class="form-group"><input class="form-input" id="gastoDesc" type="text" placeholder="Ej: Aceite y filtros" autocomplete="off"></div>
+    <div class="stitle">Monto</div>
+    <div class="form-group"><input class="form-input" id="gastoMonto" type="number" inputmode="numeric" placeholder="0" style="font-family:'DM Mono',monospace"></div>
+    <button class="btn-primary" onclick="submitGasto()">REGISTRAR GASTO</button>`;
+}
 
 function selectAuto(auto, el) {
   selectedAuto = auto;
-  document.querySelectorAll("#autoSelector .radio-option").forEach(o=>o.classList.remove("selected"));
-  el.classList.add("selected");
+  document.querySelectorAll("#autoSel .radio-opt").forEach(o=>o.classList.remove("sel"));
+  el.classList.add("sel");
 }
 
 async function submitGasto() {
   const desc  = document.getElementById("gastoDesc").value.trim();
   const monto = parseFloat(document.getElementById("gastoMonto").value);
-  if (!desc || isNaN(monto) || monto<=0) { showToast("Completá descripción y monto","error"); return; }
+  if (!desc || isNaN(monto) || monto<=0){ showToast("Completá descripción y monto","error"); return; }
   try {
     const res = await apiFetch("/gasto",{method:"POST",body:JSON.stringify({auto:selectedAuto,descripcion:desc,monto})});
-    if (res.ok) {
+    if(res.ok){
       showToast("✓ "+res.mensaje,"success");
       document.getElementById("gastoDesc").value="";
       document.getElementById("gastoMonto").value="";
     } else showToast("⚠ "+(res.error||"Error"),"error");
-  } catch(e) { showToast("⚠ Error de conexión","error"); }
+  } catch(e){ showToast("⚠ Error de conexión","error"); }
 }
 
 // ── CONFIG ─────────────────────────────────────────────────────────────────────
 async function renderConfig() {
-  const container = document.getElementById("page-config");
-  container.innerHTML = `<div class="loading"><div class="spinner"></div></div>`;
+  const el = document.getElementById("page-config");
+  el.innerHTML = `<div class="loading"><div class="spinner"></div></div>`;
   try {
-    const francos = await apiFetch("/francos");
+    const francos   = await apiFetch("/francos");
     const diaActual = francos.franco_weekday ?? 1;
-    const excepciones = francos.excepciones || {};
+    const exc       = francos.excepciones || {};
 
-    let excHtml = Object.entries(excepciones).length === 0
+    let excHtml = Object.keys(exc).length === 0
       ? `<div style="color:var(--muted);font-size:13px;padding:10px 0">Sin excepciones cargadas</div>`
-      : Object.entries(excepciones).map(([fecha, motivo]) => `
+      : Object.entries(exc).map(([fecha, motivo])=>`
           <div class="config-row">
-            <div><div class="config-label">${fmtFecha(fecha)}</div><div class="config-sub">${motivo}</div></div>
-            <button onclick="eliminarExcepcion('${fecha}')" style="background:#2b0d0d;color:var(--danger);border:1px solid #3a1010;padding:6px 12px;border-radius:8px;font-size:12px;cursor:pointer">Quitar</button>
+            <div><div class="config-label">${fecha}</div><div class="config-sub">${motivo}</div></div>
+            <button onclick="eliminarExcepcion('${fecha}')" style="background:#2b0d0d;color:var(--danger);border:1px solid #4a1515;padding:6px 12px;border-radius:8px;font-size:12px;cursor:pointer">Quitar</button>
           </div>`).join("");
 
-    container.innerHTML = `
-      <div class="section-title">Día de franco por defecto</div>
+    el.innerHTML = `
+      <div class="stitle">Día de franco por defecto</div>
       <div class="form-group">
-        <select class="form-input" id="diaFrancoSelect" onchange="cambiarDiaFranco(this.value)">
-          ${DIAS_FULL.map((d,i)=>`<option value="${i}" ${i===diaActual?'selected':''}>${d}</option>`).join("")}
+        <select class="form-input" id="diaFrancoSel" onchange="cambiarFranco(this.value)">
+          ${DIAS_FULL.map((d,i)=>`<option value="${i}" ${i===diaActual?"selected":""}>${d}</option>`).join("")}
         </select>
       </div>
-
-      <div class="section-title" style="margin-top:24px">Agregar excepción</div>
-      <div style="font-size:13px;color:var(--muted);margin-bottom:12px">Marcá un día específico como franco o reparación</div>
-      <div class="form-group">
-        <label class="form-label">Fecha</label>
-        <input class="form-input" type="date" id="excFecha" value="${today()}">
-      </div>
-      <div class="form-group">
-        <label class="form-label">Motivo</label>
+      <div class="stitle" style="margin-top:22px">Agregar excepción</div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:12px">Día específico que no se cobra (franco especial, reparación, feriado)</div>
+      <div class="form-group"><label class="form-label">Fecha</label><input class="form-input" type="date" id="excFecha" value="${today()}"></div>
+      <div class="form-group"><label class="form-label">Motivo</label>
         <select class="form-input" id="excMotivo">
           <option value="franco_especial">Franco especial</option>
           <option value="reparacion">Auto en reparación</option>
@@ -564,38 +603,33 @@ async function renderConfig() {
         </select>
       </div>
       <button class="btn-primary" onclick="agregarExcepcion()">AGREGAR EXCEPCIÓN</button>
-
-      <div class="section-title" style="margin-top:24px">Excepciones cargadas</div>
+      <div class="stitle" style="margin-top:22px">Excepciones cargadas</div>
       ${excHtml}`;
-  } catch(e) {
-    container.innerHTML = `<div class="loading">⚠️ Error cargando config</div>`;
-  }
+  } catch(e){ el.innerHTML=`<div class="loading">⚠️ Error</div>`; }
 }
 
-async function cambiarDiaFranco(val) {
+async function cambiarFranco(val) {
   try {
     await apiFetch("/francos",{method:"POST",body:JSON.stringify({franco_weekday:parseInt(val)})});
-    showToast("✓ Día de franco actualizado","success");
-    loadData();
-  } catch(e) { showToast("⚠ Error","error"); }
+    showToast("✓ Día de franco actualizado","success"); loadData();
+  } catch(e){ showToast("⚠ Error","error"); }
 }
 
 async function agregarExcepcion() {
   const fecha  = document.getElementById("excFecha").value;
   const motivo = document.getElementById("excMotivo").value;
-  if (!fecha) { showToast("Seleccioná una fecha","error"); return; }
+  if (!fecha){ showToast("Seleccioná una fecha","error"); return; }
   try {
     const res = await apiFetch("/francos",{method:"POST",body:JSON.stringify({excepcion_fecha:fecha,motivo})});
-    if (res.ok) { showToast("✓ Excepción agregada","success"); renderConfig(); loadData(); }
-    else showToast("⚠ Error","error");
-  } catch(e) { showToast("⚠ Error de conexión","error"); }
+    if(res.ok){ showToast("✓ Excepción agregada","success"); renderConfig(); loadData(); }
+  } catch(e){ showToast("⚠ Error","error"); }
 }
 
 async function eliminarExcepcion(fecha) {
   try {
     const res = await apiFetch("/francos",{method:"POST",body:JSON.stringify({eliminar_excepcion:fecha})});
-    if (res.ok) { showToast("✓ Excepción eliminada","success"); renderConfig(); loadData(); }
-  } catch(e) { showToast("⚠ Error","error"); }
+    if(res.ok){ showToast("✓ Eliminada","success"); renderConfig(); loadData(); }
+  } catch(e){ showToast("⚠ Error","error"); }
 }
 
 // ── INIT ───────────────────────────────────────────────────────────────────────
