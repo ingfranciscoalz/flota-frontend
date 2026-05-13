@@ -10,32 +10,21 @@
   <title>Flota</title>
   <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Syne:wght@700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --bg:#0a0a0a; --surface:#141414; --surface2:#1e1e1e; --border:#2a2a2a;
-      --accent:#e8ff47; --accent2:#ff6b35; --text:#f0f0f0; --muted:#555;
-      --danger:#ff4545; --ok:#47ff8a; --warn:#ffb347; --franco:#4a9eff;
-    }
+    :root{--bg:#0a0a0a;--surface:#141414;--surface2:#1e1e1e;--border:#2a2a2a;--accent:#e8ff47;--accent2:#ff6b35;--text:#f0f0f0;--muted:#555;--danger:#ff4545;--ok:#47ff8a;--warn:#ffb347;--franco:#4a9eff}
     *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
     body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100dvh;overflow-x:hidden}
-
     .header{padding:52px 16px 12px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;background:linear-gradient(to bottom,var(--bg) 75%,transparent)}
     .header h1{font-family:'Syne',sans-serif;font-size:26px;font-weight:800;letter-spacing:-0.5px}
     .header h1 span{color:var(--accent)}
     .sync-btn{width:36px;height:36px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center}
     .sync-btn.spinning{animation:spin 1s linear infinite}
     @keyframes spin{to{transform:rotate(360deg)}}
-
-    .page{display:none;padding:0 16px 100px}
-    .page.active{display:block}
-
+    .page{display:none;padding:0 16px 100px}.page.active{display:block}
     .stitle{font-family:'Syne',sans-serif;font-size:10px;font-weight:800;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);margin:18px 0 8px}
     .card{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:16px;margin-bottom:10px}
     .auto-tag{font-family:'Syne',sans-serif;font-size:10px;font-weight:800;letter-spacing:2px;text-transform:uppercase;padding:3px 10px;border-radius:5px;display:inline-block}
-    .tag-negro{background:#1c1c1c;color:#bbb;border:1px solid #3a3a3a}
-    .tag-blanco{background:#f0f0f0;color:#111}
+    .tag-negro{background:#1c1c1c;color:#bbb;border:1px solid #3a3a3a}.tag-blanco{background:#f0f0f0;color:#111}
     .divider{height:1px;background:var(--border);margin:14px 0}
-
-    /* RESUMEN */
     .total-banner{background:linear-gradient(135deg,#0f1f0f,#0a0a0a);border:1px solid #1e3a1e;border-radius:14px;padding:16px 18px;display:flex;justify-content:space-between;margin-bottom:10px}
     .total-label{font-size:10px;color:var(--muted);font-family:'DM Mono',monospace;text-transform:uppercase;letter-spacing:1px;margin-bottom:4px}
     .total-value{font-family:'DM Mono',monospace;font-size:22px;font-weight:500;color:var(--ok)}
@@ -47,167 +36,107 @@
     .gan-cell{background:var(--surface2);border-radius:10px;padding:11px 13px}
     .gan-label{font-size:9px;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);margin-bottom:3px;font-family:'DM Mono',monospace}
     .gan-value{font-family:'DM Mono',monospace;font-size:14px;font-weight:500;color:var(--ok)}
+    .neto-row{background:linear-gradient(135deg,#0f1f0f,#0a1a0a);border:1px solid #1e3a1e;border-radius:10px;padding:11px 13px;margin-top:8px;display:flex;justify-content:space-between;align-items:center}
+    .neto-label{font-size:9px;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);font-family:'DM Mono',monospace}
+    .neto-value{font-family:'DM Mono',monospace;font-size:15px;font-weight:500;color:var(--ok)}
     .mant-list{display:flex;flex-direction:column;gap:6px;margin-top:10px}
     .mant-item{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:var(--surface2);border-radius:10px;cursor:pointer;-webkit-tap-highlight-color:rgba(255,255,255,0.05)}
     .mant-item:active{opacity:0.6}
     .mant-nombre{font-size:13px;font-weight:500}
-    .mant-faltan{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin-top:2px}
+    .mant-sub{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);margin-top:2px}
     .mbadge{font-size:10px;font-weight:700;padding:3px 8px;border-radius:5px;text-transform:uppercase}
-    .mbadge-ok{background:#0d2b18;color:var(--ok)}
-    .mbadge-cambiar{background:#2b0d0d;color:var(--danger)}
-
-    /* ── CALENDARIO ── */
+    .mbadge-ok{background:#0d2b18;color:var(--ok)}.mbadge-cambiar{background:#2b0d0d;color:var(--danger)}
+    .kms-row{display:flex;gap:8px;align-items:center;margin-top:8px}
+    .kms-input{flex:1;padding:9px 13px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:'DM Mono',monospace;font-size:14px;outline:none;-webkit-appearance:none}
+    .kms-input:focus{border-color:var(--accent)}
+    .kms-btn{padding:9px 14px;background:var(--accent);color:#000;border:none;border-radius:10px;font-weight:700;font-size:13px;cursor:pointer}
+    /* CALENDARIO */
     .cal-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
     .cal-nav-btn{width:36px;height:36px;border-radius:50%;background:var(--surface2);border:1px solid var(--border);color:var(--text);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center}
-    .cal-month-label{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;letter-spacing:0.5px}
-
-    /* Leyenda */
-    .cal-legend{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
-    .leg-item{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted)}
+    .cal-month-label{font-family:'Syne',sans-serif;font-size:16px;font-weight:800}
+    .cal-legend{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+    .leg-item{display:flex;align-items:center;gap:5px;font-size:10px;color:var(--muted)}
     .leg-dot{width:10px;height:10px;border-radius:3px;flex-shrink:0}
-
-    /* Grid del calendario — 8 columnas: label + 7 días */
-    .cal-table{width:100%;border-collapse:collapse}
+    .cal-table{width:100%;border-collapse:separate;border-spacing:3px}
     .cal-th{font-family:'DM Mono',monospace;font-size:10px;color:var(--muted);text-align:center;padding:4px 2px;font-weight:500}
-    .cal-th.chofer-th{text-align:left;font-size:10px;color:var(--muted);padding-left:4px;white-space:nowrap}
-
-    /* Cada celda de día tiene los indicadores de los choferes */
-    .cal-td{padding:2px;vertical-align:top;cursor:pointer;position:relative}
+    .cal-td{padding:1px;vertical-align:top;cursor:pointer}
     .cal-td:active .day-cell{opacity:0.7;transform:scale(0.95)}
-
-    .day-cell{
-      border-radius:8px;
-      background:var(--surface2);
-      border:1px solid transparent;
-      padding:5px 3px 4px;
-      min-height:58px;
-      display:flex;
-      flex-direction:column;
-      align-items:center;
-      gap:3px;
-      transition:transform 0.1s;
-      position:relative;
-    }
+    .cal-td.empty{cursor:default}
+    .day-cell{border-radius:8px;background:var(--surface2);border:1px solid transparent;padding:5px 3px 4px;min-height:62px;display:flex;flex-direction:column;align-items:center;gap:2px;transition:transform 0.1s}
     .day-cell.today{border-color:var(--accent)}
-    .day-cell.all-franco{background:#0d1520;border-color:#1a3050}
     .day-cell.has-debe{border-color:#3a1515}
-    .day-cell.future{opacity:0.35}
-
+    .day-cell.all-franco{background:#0d1520;border-color:#1a3050}
+    .day-cell.future{opacity:0.3}
     .day-num{font-family:'DM Mono',monospace;font-size:11px;font-weight:500;color:var(--muted);line-height:1}
     .day-cell.today .day-num{color:var(--accent);font-weight:700}
-
-    /* Indicadores por chofer — 2 píldoras por celda */
     .day-choferes{display:flex;flex-direction:column;gap:2px;width:100%}
-    .chofer-pill{
-      border-radius:4px;
-      font-family:'DM Mono',monospace;
-      font-size:9px;
-      font-weight:700;
-      padding:2px 4px;
-      text-align:center;
-      line-height:1.2;
-      letter-spacing:0.3px;
-    }
+    .chofer-pill{border-radius:4px;font-family:'DM Mono',monospace;font-size:9px;font-weight:700;padding:2px 3px;text-align:center;line-height:1.3;letter-spacing:0.2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     .pill-completo{background:#0d2b18;color:var(--ok)}
     .pill-parcial{background:#2b2000;color:var(--warn)}
     .pill-debe{background:#2b0d0d;color:var(--danger)}
     .pill-franco{background:#0d1a2b;color:var(--franco)}
-    .pill-futuro{background:var(--surface);color:#444}
-    .pill-empty{background:transparent;color:transparent}
-
-    /* Semanas vacías */
-    .cal-td.empty .day-cell{background:transparent;border-color:transparent;cursor:default}
-
-    /* ── MODAL DÍA ── */
+    .pill-futuro{background:var(--surface);color:#333}
+    /* MODAL */
     .modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.85);z-index:500;display:flex;align-items:flex-end}
     .modal-sheet{background:var(--surface);border-radius:20px 20px 0 0;width:100%;padding:20px 18px 44px;max-height:85dvh;overflow-y:auto}
-    .modal-date{font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);margin-bottom:4px}
-    .modal-title{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;margin-bottom:18px}
-
-    .chofer-section{margin-bottom:16px;background:var(--surface2);border-radius:12px;padding:14px}
-    .chofer-section-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px}
-    .chofer-section-name{font-size:15px;font-weight:600}
-    .estado-badge{font-family:'DM Mono',monospace;font-size:10px;font-weight:700;padding:3px 9px;border-radius:5px;text-transform:uppercase}
-    .eb-completo{background:#0d2b18;color:var(--ok)}
-    .eb-parcial{background:#2b2000;color:var(--warn)}
-    .eb-debe{background:#2b0d0d;color:var(--danger)}
-    .eb-franco{background:#0d1a2b;color:var(--franco)}
+    .modal-date{font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);margin-bottom:3px}
+    .modal-title{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;margin-bottom:16px}
+    .chofer-section{margin-bottom:12px;background:var(--surface2);border-radius:12px;padding:14px}
+    .chofer-sec-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+    .chofer-sec-name{font-size:15px;font-weight:600}
+    .chofer-sec-sub{font-size:11px;color:var(--muted);margin-top:1px}
+    .eb{font-family:'DM Mono',monospace;font-size:10px;font-weight:700;padding:3px 9px;border-radius:5px;text-transform:uppercase}
+    .eb-completo{background:#0d2b18;color:var(--ok)}.eb-parcial{background:#2b2000;color:var(--warn)}
+    .eb-debe{background:#2b0d0d;color:var(--danger)}.eb-franco{background:#0d1a2b;color:var(--franco)}
     .eb-futuro{background:var(--surface);color:var(--muted)}
-
-    .modal-valor-actual{font-family:'DM Mono',monospace;font-size:12px;color:var(--muted);margin-bottom:10px}
-
     .action-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:8px}
     .action-btn{padding:11px 8px;border-radius:10px;border:1px solid var(--border);background:var(--surface);color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;text-align:center;transition:all 0.15s}
     .action-btn:active{transform:scale(0.96)}
-    .action-btn.primary{background:var(--accent);color:#000;border-color:var(--accent);font-weight:700}
-    .action-btn.franco-btn{background:#0d1a2b;color:var(--franco);border-color:#1a3050}
-    .action-btn.quitar-franco{background:#1a0a00;color:var(--warn);border-color:#3a2000}
-
-    .monto-row{display:flex;gap:8px;margin-top:0}
+    .action-btn.ab-primary{background:var(--accent);color:#000;border-color:var(--accent);font-weight:700}
+    .action-btn.ab-franco{background:#0d1a2b;color:var(--franco);border-color:#1a3050}
+    .action-btn.ab-quitar{background:#1a0a00;color:var(--warn);border-color:#3a2000}
+    .monto-row{display:flex;gap:8px}
     .monto-input{flex:1;padding:11px 13px;background:var(--surface);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:'DM Mono',monospace;font-size:15px;outline:none;-webkit-appearance:none}
     .monto-input:focus{border-color:var(--accent)}
     .monto-input::placeholder{color:var(--muted)}
-    .monto-btn{padding:11px 16px;background:var(--surface2);color:var(--text);border:1px solid var(--border);border-radius:10px;font-weight:600;font-size:13px;cursor:pointer;white-space:nowrap}
-    .monto-btn:active{background:var(--accent);color:#000;border-color:var(--accent)}
-
+    .monto-btn{padding:11px 16px;background:var(--surface2);color:var(--text);border:1px solid var(--border);border-radius:10px;font-weight:600;font-size:13px;cursor:pointer}
+    .monto-btn:active{background:var(--accent);color:#000}
     .modal-close{width:100%;padding:13px;background:transparent;color:var(--muted);border:1px solid var(--border);border-radius:12px;font-size:14px;cursor:pointer;margin-top:10px}
-
     /* GASTOS */
     .tabs{display:flex;gap:6px;margin-bottom:16px}
     .tab{flex:1;padding:10px;border-radius:10px;border:1px solid var(--border);background:transparent;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;text-align:center;transition:all 0.2s}
     .tab.active{background:var(--accent);color:#000;border-color:var(--accent);font-weight:700}
     .gasto-item{display:flex;align-items:center;justify-content:space-between;padding:13px 14px;background:var(--surface);border:1px solid var(--border);border-radius:12px;margin-bottom:8px}
-    .gasto-desc{font-size:14px;font-weight:500}
-    .gasto-auto{font-size:11px;color:var(--muted);margin-top:2px}
+    .gasto-desc{font-size:14px;font-weight:500}.gasto-auto{font-size:11px;color:var(--muted);margin-top:2px}
     .gasto-monto{font-family:'DM Mono',monospace;font-size:14px;color:var(--accent2);font-weight:500;white-space:nowrap;margin-left:10px}
     .form-label{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--muted);font-family:'DM Mono',monospace;display:block;margin-bottom:6px}
     .form-input{width:100%;padding:13px 14px;background:var(--surface);border:1px solid var(--border);border-radius:12px;color:var(--text);font-family:'DM Sans',sans-serif;font-size:15px;outline:none;-webkit-appearance:none;transition:border-color 0.2s}
-    .form-input:focus{border-color:var(--accent)}
-    .form-input::placeholder{color:var(--muted)}
+    .form-input:focus{border-color:var(--accent)}.form-input::placeholder{color:var(--muted)}
     .form-group{margin-bottom:12px}
+    select.form-input{cursor:pointer}
     .radio-group{display:flex;gap:8px}
     .radio-opt{flex:1;padding:11px;border-radius:10px;border:1px solid var(--border);background:var(--surface);text-align:center;cursor:pointer;transition:all 0.15s}
     .radio-opt.sel{border-color:var(--accent);background:#1a1a00}
-    .radio-opt .rl{font-size:13px;font-weight:500}
-    .radio-opt .rs{font-size:11px;color:var(--muted)}
+    .radio-opt .rl{font-size:13px;font-weight:500}.radio-opt .rs{font-size:11px;color:var(--muted)}
     .btn-primary{width:100%;padding:15px;background:var(--accent);color:#000;border:none;border-radius:13px;font-family:'Syne',sans-serif;font-size:15px;font-weight:800;cursor:pointer;margin-top:8px;transition:transform 0.15s,opacity 0.15s}
     .btn-primary:active{transform:scale(0.98);opacity:0.9}
-
-    /* TOAST */
     .toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--surface2);border:1px solid var(--border);color:var(--text);padding:11px 18px;border-radius:12px;font-size:13px;font-weight:500;opacity:0;transition:all 0.3s;z-index:999;white-space:nowrap;max-width:92vw;text-align:center}
-    .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
-    .toast.success{border-color:var(--ok);color:var(--ok)}
-    .toast.error{border-color:var(--danger);color:var(--danger)}
-
-    /* BOTTOM NAV */
+    .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}.toast.success{border-color:var(--ok);color:var(--ok)}.toast.error{border-color:var(--danger);color:var(--danger)}
     .bottom-nav{position:fixed;bottom:0;left:0;right:0;display:flex;background:rgba(10,10,10,0.94);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-top:1px solid var(--border);padding:8px 0 24px;z-index:200}
     .bnav-btn{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:5px 0;background:none;border:none;cursor:pointer;color:var(--muted);transition:color 0.2s}
-    .bnav-btn.active{color:var(--accent)}
-    .bnav-btn svg{width:21px;height:21px}
-    .bnav-label{font-size:9px;font-weight:500;letter-spacing:0.3px}
-
+    .bnav-btn.active{color:var(--accent)}.bnav-btn svg{width:21px;height:21px}.bnav-label{font-size:9px;font-weight:500;letter-spacing:0.3px}
     .loading{display:flex;flex-direction:column;align-items:center;justify-content:center;padding:60px 20px;gap:12px;color:var(--muted);font-size:13px}
     .spinner{width:26px;height:26px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin 0.8s linear infinite}
-    select.form-input{cursor:pointer}
-
-    /* KMS en resumen */
-    .kms-row{display:flex;gap:8px;align-items:center;margin-top:8px}
-    .kms-input{flex:1;padding:9px 13px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:'DM Mono',monospace;font-size:14px;outline:none;-webkit-appearance:none}
-    .kms-input:focus{border-color:var(--accent)}
-    .kms-btn{padding:9px 14px;background:var(--accent);color:#000;border:none;border-radius:10px;font-weight:700;font-size:13px;cursor:pointer}
   </style>
 </head>
 <body>
-
 <div class="header">
   <h1>FLOTA<span>.</span></h1>
   <button class="sync-btn" id="syncBtn" onclick="loadAll()">↻</button>
 </div>
-
 <div class="page active" id="page-resumen"></div>
 <div class="page" id="page-calendario"></div>
 <div class="page" id="page-gastos"></div>
-
 <nav class="bottom-nav">
   <button class="bnav-btn active" onclick="showPage('resumen',this)">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
@@ -222,32 +151,27 @@
     <span class="bnav-label">Gastos</span>
   </button>
 </nav>
-
 <div class="toast" id="toast"></div>
-
 <script>
 const API_BASE = "https://flota-backend-production.up.railway.app";
 const API_KEY  = "flota2026xK9";
-
 const DIAS_CORTOS = ["Lu","Ma","Mi","Ju","Vi","Sa","Do"];
 const MESES = ["Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre"];
+const DIAS_FULL = ["Lunes","Martes","Miércoles","Jueves","Viernes","Sábado","Domingo"];
 
 let cachedResumen = null;
 let cachedCal = null;
-let calYear  = new Date().getFullYear();
-let calMonth = new Date().getMonth() + 1; // 1-indexed
+let calYear = new Date().getFullYear();
+let calMonth = new Date().getMonth() + 1;
 
-// ── UTILS ──────────────────────────────────────────────────────────────────────
 function fmt(n) {
   if (n===null||n===undefined) return "—";
-  const num = typeof n==="number" ? n : parseFloat(String(n).replace(/[^0-9.-]/g,""));
+  const num = typeof n==="number"?n:parseFloat(String(n).replace(/[^0-9.-]/g,""));
   if (isNaN(num)) return String(n);
   return "$"+num.toLocaleString("es-AR");
 }
 function today() { return new Date().toISOString().split("T")[0]; }
 function padZ(n) { return String(n).padStart(2,"0"); }
-function dateStr(y,m,d) { return `${y}-${padZ(m)}-${padZ(d)}`; }
-
 function showToast(msg,type="") {
   const t=document.getElementById("toast");
   t.textContent=msg; t.className="toast show "+type;
@@ -275,7 +199,7 @@ async function loadAll() {
   try {
     [cachedResumen, cachedCal] = await Promise.all([
       apiFetch("/resumen"),
-      apiFetch(`/calendario?year=${calYear}&month=${calMonth}`)
+      apiFetch("/calendario?year="+calYear+"&month="+calMonth)
     ]);
     renderResumen();
     renderCalendario();
@@ -283,9 +207,8 @@ async function loadAll() {
     document.getElementById("page-resumen").innerHTML=`<div class="loading">⚠️ Error de conexión</div>`;
   } finally { btn.classList.remove("spinning"); }
 }
-
 async function loadCal() {
-  cachedCal = await apiFetch(`/calendario?year=${calYear}&month=${calMonth}`);
+  cachedCal = await apiFetch("/calendario?year="+calYear+"&month="+calMonth);
   renderCalendario();
 }
 
@@ -294,7 +217,16 @@ function renderResumen() {
   if (!cachedResumen) return;
   const el = document.getElementById("page-resumen");
   const tot = cachedResumen.totales||{};
+  const cfg = cachedResumen.config||{};
   let html = "";
+
+  // Alertas críticas arriba
+  for (const [aid, adata] of Object.entries(cachedResumen)) {
+    if (!adata.mantenimiento) continue;
+    adata.mantenimiento.filter(m=>m.estado==="CAMBIAR").forEach(m=>{
+      html += `<div style="background:#1a0505;border:1px solid #3a1010;border-radius:12px;padding:11px 14px;margin-bottom:8px;display:flex;gap:10px;align-items:center"><span>⚠️</span><span style="font-size:13px"><b style="color:var(--danger)">${adata.nombre}</b> — ${m.nombre} necesita cambio</span></div>`;
+    });
+  }
 
   html += `<div class="stitle">Total flota</div>
     <div class="total-banner">
@@ -302,89 +234,96 @@ function renderResumen() {
       <div style="text-align:right"><div class="total-label">Este mes</div><div class="total-value">${fmt(tot.mes||0)}</div></div>
     </div>`;
 
-  for (const [key,data] of Object.entries(cachedResumen)) {
-    if (!data.nombre) continue;
-    const tagClass = key==="negro"?"tag-negro":"tag-blanco";
-    const gan = data.ganancias||{};
+  for (const [aid, adata] of Object.entries(cachedResumen)) {
+    if (!adata.nombre || aid==="totales" || aid==="franco_weekday" || aid==="config") continue;
+    const tagClass = aid==="negro"?"tag-negro":"tag-blanco";
+    const gan = adata.ganancias||{};
+    const choferes = Object.values(cfg.choferes||{}).filter(c=>c.auto_id===aid).map(c=>c.nombre);
+
     html += `<div class="card">
       <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
-        <span class="auto-tag ${tagClass}">${data.nombre}</span>
-        <span style="font-size:11px;color:var(--muted)">${Object.values(data.choferes||{}).join(" · ")}</span>
+        <span class="auto-tag ${tagClass}">${adata.nombre}</span>
+        <span style="font-size:11px;color:var(--muted)">${choferes.join(" · ")}</span>
       </div>
       <div class="gan-row">
-        <div class="gan-cell"><div class="gan-label">Semana</div><div class="gan-value">${fmt(gan.semana?.total||0)}</div></div>
-        <div class="gan-cell"><div class="gan-label">Mes</div><div class="gan-value">${fmt(gan.mes?.total||0)}</div></div>
+        <div class="gan-cell"><div class="gan-label">Semana</div><div class="gan-value">${fmt(gan.semana||0)}</div></div>
+        <div class="gan-cell"><div class="gan-label">Mes bruto</div><div class="gan-value">${fmt(gan.mes||0)}</div></div>
+      </div>
+      <div class="neto-row">
+        <div class="neto-label">Neto del mes</div>
+        <div class="neto-value">${fmt(gan.neto_mes||0)}</div>
       </div>
       <div class="metric-grid">
-        <div class="metric"><div class="metric-label">Acumulado</div><div class="metric-value">${data.acumulado||"—"}</div></div>
-        <div class="metric"><div class="metric-label">Bruto/mes</div><div class="metric-value">${data.bruto_mensual||"—"}</div></div>
-        <div class="metric"><div class="metric-label">Gastos</div><div class="metric-value" style="color:var(--accent2)">${data.gastos_total||"—"}</div></div>
-        <div class="metric"><div class="metric-label">Kms</div><div class="metric-value" style="color:var(--text)">${data.kms_actuales||"—"}</div></div>
+        <div class="metric"><div class="metric-label">Gastos mes</div><div class="metric-value" style="color:var(--accent2)">${fmt(gan.gastos_mes||0)}</div></div>
+        <div class="metric"><div class="metric-label">Kms actuales</div><div class="metric-value" style="color:var(--text)">${(adata.kms_actuales||0).toLocaleString("es-AR")}</div></div>
       </div>
       <div class="kms-row">
-        <input class="kms-input" type="number" inputmode="numeric" id="kms_${key}" placeholder="Actualizar kms...">
-        <button class="kms-btn" onclick="actualizarKms('${key}')">OK</button>
+        <input class="kms-input" type="number" inputmode="numeric" id="kms_${aid}" placeholder="Actualizar kms...">
+        <button class="kms-btn" onclick="actualizarKms('${aid}')">OK</button>
       </div>
-      ${renderMantCard(data.mantenimiento||[], key)}
+      ${renderMantCard(adata.mantenimiento||[], aid)}
     </div>`;
-  }
-
-  // Alertas
-  for (const [key,data] of Object.entries(cachedResumen)) {
-    if (!data.mantenimiento) continue;
-    data.mantenimiento.filter(m=>m.estado==="CAMBIAR").forEach(m=>{
-      html = `<div style="background:#1a0505;border:1px solid #3a1010;border-radius:12px;padding:11px 14px;margin-bottom:8px;display:flex;gap:10px;align-items:center"><span>⚠️</span><span style="font-size:13px"><b style="color:var(--danger)">${data.nombre}</b> — ${m.trabajo} necesita cambio</span></div>` + html;
-    });
   }
   el.innerHTML = html;
 }
 
-function renderMantCard(items, autoKey) {
+function renderMantCard(items, autoId) {
   if (!items.length) return "";
   return `<div class="divider"></div>
     <div class="stitle" style="margin-top:0">Mantenimiento</div>
     <div class="mant-list">
       ${items.map(m=>`
-        <div class="mant-item" onclick="showMantModal('${autoKey}',${m.fila},'${m.trabajo}')">
-          <div><div class="mant-nombre">${m.trabajo}</div>${m.faltan?`<div class="mant-faltan">Faltan ${m.faltan} km</div>`:""}</div>
+        <div class="mant-item" onclick="showMantModal('${autoId}','${m.mant_id}','${m.nombre}',${m.kms_actuales||0})">
+          <div>
+            <div class="mant-nombre">${m.nombre}</div>
+            <div class="mant-sub">${m.estado==="CAMBIAR"?"Vencido":"Próximo: "+m.proximo_kms.toLocaleString("es-AR")+" km"} · Faltan: ${m.faltan_kms>0?m.faltan_kms.toLocaleString("es-AR")+" km":"VENCIDO"}</div>
+          </div>
           <span class="mbadge ${m.estado==="CAMBIAR"?"mbadge-cambiar":"mbadge-ok"}">${m.estado==="CAMBIAR"?"⚠ CAMBIAR":"✓ OK"}</span>
         </div>`).join("")}
     </div>`;
 }
 
-async function actualizarKms(auto) {
-  const kms=document.getElementById("kms_"+auto)?.value;
+async function actualizarKms(autoId) {
+  const kms=document.getElementById("kms_"+autoId)?.value;
   if(!kms){showToast("Ingresá los kms","error");return;}
   try {
-    const res=await apiFetch("/kms",{method:"POST",body:JSON.stringify({auto,kms:parseInt(kms)})});
+    const res=await apiFetch("/kms",{method:"POST",body:JSON.stringify({auto_id:autoId,kms:parseInt(kms)})});
     if(res.ok){showToast("✓ "+res.mensaje,"success");loadAll();}
     else showToast("⚠ "+(res.error||"Error"),"error");
   } catch(e){showToast("⚠ Error","error");}
 }
 
-function showMantModal(autoKey,fila,trabajo) {
-  const kmsAct=cachedResumen[autoKey]?.kms_actuales||"";
+function showMantModal(autoId, mantId, nombre, kmsAct) {
   const m=document.createElement("div"); m.className="modal-overlay";
   m.innerHTML=`<div class="modal-sheet">
-    <div class="modal-title">${trabajo}</div>
-    <div class="modal-date">${cachedResumen[autoKey]?.nombre||autoKey}</div>
-    <div style="margin-bottom:16px">
-      <label class="form-label" style="margin-top:12px">Kms al realizar el service</label>
-      <input class="form-input" type="number" inputmode="numeric" id="modalKms" value="${kmsAct}" placeholder="Ej: 45000">
+    <div class="modal-title">${nombre}</div>
+    <div class="modal-date">${cachedResumen[autoId]?.nombre||autoId}</div>
+    <div style="margin:16px 0">
+      <label class="form-label">Kms al momento del service</label>
+      <input class="form-input" type="number" inputmode="numeric" id="modalKms" value="${kmsAct||""}" placeholder="Ej: 45000">
     </div>
-    <button class="btn-primary" onclick="confirmarMant('${autoKey}',${fila},this)">✓ MARCAR COMO REALIZADO</button>
+    <div style="margin-bottom:16px">
+      <label class="form-label">Costo del service (opcional)</label>
+      <input class="form-input" type="number" inputmode="numeric" id="modalCosto" placeholder="Ej: 60000">
+    </div>
+    <button class="btn-primary" onclick="confirmarMant('${autoId}','${mantId}',this)">✓ MARCAR COMO REALIZADO</button>
     <button class="modal-close" onclick="this.closest('.modal-overlay').remove()">Cancelar</button>
   </div>`;
   m.onclick=e=>{if(e.target===m)m.remove();};
   document.body.appendChild(m);
 }
 
-async function confirmarMant(autoKey,fila,btn) {
+async function confirmarMant(autoId, mantId, btn) {
   const kms=document.getElementById("modalKms")?.value;
+  const costo=document.getElementById("modalCosto")?.value;
   btn.disabled=true; btn.textContent="Guardando...";
   try {
-    const res=await apiFetch("/mantenimiento",{method:"POST",body:JSON.stringify({auto:autoKey,fila,kms_actuales:kms?parseInt(kms):null})});
-    if(res.ok){showToast("✓ Mantenimiento registrado","success");btn.closest(".modal-overlay").remove();loadAll();}
+    const res=await apiFetch("/mantenimiento",{method:"POST",body:JSON.stringify({
+      auto_id:autoId, mant_id:mantId,
+      kms_en_service:kms?parseInt(kms):0,
+      costo:costo?parseFloat(costo):0
+    })});
+    if(res.ok){showToast("✓ "+res.mensaje,"success");btn.closest(".modal-overlay").remove();loadAll();}
     else{showToast("⚠ "+(res.error||"Error"),"error");btn.disabled=false;btn.textContent="✓ MARCAR COMO REALIZADO";}
   } catch(e){showToast("⚠ Error","error");btn.disabled=false;btn.textContent="✓ MARCAR COMO REALIZADO";}
 }
@@ -395,19 +334,16 @@ function renderCalendario() {
   const el = document.getElementById("page-calendario");
   const todayStr = today();
   const francoWD = cachedCal.franco_weekday ?? 1;
-
-  // Días del mes
   const daysInMonth = new Date(calYear, calMonth, 0).getDate();
-  // Primer día (lun=0)
   let firstDow = new Date(calYear, calMonth-1, 1).getDay();
   firstDow = (firstDow+6)%7;
 
-  // Recolectar todos los choferes en orden: negro B, negro C, blanco B, blanco C
-  const choferesList = []; // [{autoKey, col, nombre, autoNombre}]
-  for (const [autoKey, autoData] of Object.entries(cachedCal)) {
-    if (!autoData.nombre) continue;
-    for (const [col, nombre] of Object.entries(autoData.choferes||{})) {
-      choferesList.push({autoKey, col, nombre, autoNombre: autoData.nombre});
+  // Todos los choferes en orden
+  const choferesList = [];
+  for (const [aid, adata] of Object.entries(cachedCal)) {
+    if (!adata.nombre) continue;
+    for (const [cid, cnombre] of Object.entries(adata.choferes||{})) {
+      choferesList.push({autoId:aid, choferId:cid, nombre:cnombre, autoNombre:adata.nombre});
     }
   }
 
@@ -418,78 +354,57 @@ function renderCalendario() {
       <button class="cal-nav-btn" onclick="changeMonth(1)">›</button>
     </div>
     <div class="cal-legend">
-      <div class="leg-item"><div class="leg-dot" style="background:#0d2b18;border:1px solid #1a5a30"></div>Completo</div>
-      <div class="leg-item"><div class="leg-dot" style="background:#2b2000;border:1px solid #5a4000"></div>Parcial</div>
-      <div class="leg-item"><div class="leg-dot" style="background:#2b0d0d;border:1px solid #5a1a1a"></div>Debe</div>
-      <div class="leg-item"><div class="leg-dot" style="background:#0d1a2b;border:1px solid #1a3050"></div>Franco</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#0d2b18"></div>Completo</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#2b2000"></div>Parcial</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#2b0d0d"></div>Debe</div>
+      <div class="leg-item"><div class="leg-dot" style="background:#0d1a2b"></div>Franco</div>
     </div>
     <table class="cal-table"><thead><tr>`;
+  DIAS_CORTOS.forEach(d=>html+=`<th class="cal-th">${d}</th>`);
+  html+=`</tr></thead><tbody><tr>`;
 
-  // Headers días
-  DIAS_CORTOS.forEach(d => html += `<th class="cal-th">${d}</th>`);
-  html += `</tr></thead><tbody><tr>`;
+  for(let i=0;i<firstDow;i++) html+=`<td class="cal-td empty"><div class="day-cell" style="background:transparent;border:none"></div></td>`;
 
-  // Celdas vacías
-  for (let i=0; i<firstDow; i++) html += `<td class="cal-td empty"><div class="day-cell"></div></td>`;
+  let dow=firstDow;
+  for(let day=1;day<=daysInMonth;day++) {
+    const ds=`${calYear}-${padZ(calMonth)}-${padZ(day)}`;
+    const isFuture=ds>todayStr, isToday=ds===todayStr;
 
-  let dow = firstDow;
-  for (let day=1; day<=daysInMonth; day++) {
-    const ds = dateStr(calYear, calMonth, day);
-    const isFuture = ds > todayStr;
-    const isToday  = ds === todayStr;
-
-    // Obtener estados de cada chofer para este día
-    const estadosPills = choferesList.map(ch => {
-      const autoData = cachedCal[ch.autoKey];
-      if (!autoData?.dias) return {estado:"futuro", nombre: ch.nombre.slice(0,3)};
-      const diaInfo = autoData.dias[ds]?.[ch.col];
-      if (!diaInfo) return {estado:"futuro", nombre: ch.nombre.slice(0,3)};
-      return {...diaInfo, nombre: ch.nombre.slice(0,3)};
+    const pills=choferesList.map(ch=>{
+      const diaInfo=cachedCal[ch.autoId]?.dias?.[ds]?.[ch.choferId];
+      if(!diaInfo) return {estado:"futuro",nome:ch.nombre.slice(0,3)};
+      return {...diaInfo,nome:ch.nombre.slice(0,3)};
     });
 
-    const hayDebe  = estadosPills.some(e=>e.estado==="debe");
-    const allFranc = estadosPills.every(e=>e.estado==="franco");
+    const hayDebe=pills.some(p=>p.estado==="debe");
+    const allFranc=pills.every(p=>p.estado==="franco");
+    let cc="day-cell";
+    if(isToday) cc+=" today";
+    if(allFranc) cc+=" all-franco";
+    else if(hayDebe) cc+=" has-debe";
+    if(isFuture) cc+=" future";
 
-    let cellClass = "day-cell";
-    if (isToday)   cellClass += " today";
-    if (allFranc)  cellClass += " all-franco";
-    if (hayDebe)   cellClass += " has-debe";
-    if (isFuture)  cellClass += " future";
-
-    html += `<td class="cal-td" onclick="openDayModal('${ds}')">
-      <div class="${cellClass}">
-        <span class="day-num">${day}</span>
-        <div class="day-choferes">`;
-
-    estadosPills.forEach(e => {
-      const pillClass = {
-        completo:"pill-completo", parcial:"pill-parcial",
-        debe:"pill-debe", franco:"pill-franco", futuro:"pill-futuro"
-      }[e.estado] || "pill-futuro";
-      const label = e.estado==="completo" ? "✓" :
-                    e.estado==="parcial"  ? `${e.valor||""}` :
-                    e.estado==="franco"   ? "F" :
-                    e.estado==="debe"     ? "—" : "·";
-      html += `<div class="chofer-pill ${pillClass}" title="${e.nombre}">${e.nombre.slice(0,2)} ${label}</div>`;
+    html+=`<td class="cal-td" onclick="openDayModal('${ds}')"><div class="${cc}">
+      <span class="day-num">${day}</span>
+      <div class="day-choferes">`;
+    pills.forEach(p=>{
+      const pc={completo:"pill-completo",parcial:"pill-parcial",debe:"pill-debe",franco:"pill-franco",futuro:"pill-futuro"}[p.estado]||"pill-futuro";
+      const lbl=p.estado==="completo"?"✓":p.estado==="parcial"?(p.monto||""):p.estado==="franco"?"F":p.estado==="debe"?"—":"·";
+      html+=`<div class="chofer-pill ${pc}">${p.nome} ${lbl}</div>`;
     });
-
-    html += `</div></div></td>`;
-
+    html+=`</div></div></td>`;
     dow++;
-    if (dow===7 && day<daysInMonth) { html += `</tr><tr>`; dow=0; }
+    if(dow===7&&day<daysInMonth){html+=`</tr><tr>`;dow=0;}
   }
-
-  // Rellenar última fila
-  while (dow>0 && dow<7) { html += `<td class="cal-td empty"><div class="day-cell"></div></td>`; dow++; }
-  html += `</tr></tbody></table>`;
-
-  el.innerHTML = html;
+  while(dow>0&&dow<7){html+=`<td class="cal-td empty"><div class="day-cell" style="background:transparent;border:none"></div></td>`;dow++;}
+  html+=`</tr></tbody></table>`;
+  el.innerHTML=html;
 }
 
 async function changeMonth(delta) {
-  calMonth += delta;
-  if (calMonth > 12) { calMonth=1; calYear++; }
-  if (calMonth < 1)  { calMonth=12; calYear--; }
+  calMonth+=delta;
+  if(calMonth>12){calMonth=1;calYear++;}
+  if(calMonth<1){calMonth=12;calYear--;}
   document.getElementById("page-calendario").innerHTML=`<div class="loading"><div class="spinner"></div></div>`;
   await loadCal();
 }
@@ -498,169 +413,152 @@ async function changeMonth(delta) {
 function openDayModal(ds) {
   if (!cachedCal) return;
   const [y,m,d] = ds.split("-").map(Number);
-  const dow = (new Date(y,m-1,d).getDay()+6)%7;
-  const nombreDia = ["Lunes","Martes","Miércoles","Jueves","Viernes","Sábado","Domingo"][dow];
+  const dow=(new Date(y,m-1,d).getDay()+6)%7;
+  const modal=document.createElement("div"); modal.className="modal-overlay";
+  let sectionsHtml="";
 
-  const modal = document.createElement("div");
-  modal.className = "modal-overlay";
-
-  let sectionsHtml = "";
-  for (const [autoKey, autoData] of Object.entries(cachedCal)) {
-    if (!autoData.nombre) continue;
-    for (const [col, nombre] of Object.entries(autoData.choferes||{})) {
-      const diaInfo = autoData.dias?.[ds]?.[col];
+  for (const [aid, adata] of Object.entries(cachedCal)) {
+    if (!adata.nombre) continue;
+    for (const [cid, cnombre] of Object.entries(adata.choferes||{})) {
+      const diaInfo=adata.dias?.[ds]?.[cid];
       if (!diaInfo) continue;
-      const {estado, valor, turno_base, franco_manual} = diaInfo;
+      const {estado,monto,franco_manual}=diaInfo;
+      const badgeClass={completo:"eb-completo",parcial:"eb-parcial",debe:"eb-debe",franco:"eb-franco",futuro:"eb-futuro"}[estado]||"eb-futuro";
+      const estadoLabel={completo:"Completo",parcial:"Parcial",debe:"Debe",franco:"Franco",futuro:"Futuro"}[estado]||estado;
+      const valorStr=monto?`Pagó: ${fmt(monto)}`:"";
 
-      const badgeClass = {completo:"eb-completo",parcial:"eb-parcial",debe:"eb-debe",franco:"eb-franco",futuro:"eb-futuro"}[estado]||"eb-futuro";
-      const estadoLabel = {completo:"Completo",parcial:"Parcial",debe:"Debe",franco:"Franco",futuro:"Futuro"}[estado]||estado;
-
-      const valorActual = valor ? `Pagó: ${valor} turnos${turno_base ? ` = ${fmt(valor*turno_base)}` : ""}` : "";
-
-      let actionsHtml = "";
-
-      if (estado==="franco") {
-        actionsHtml = `<button class="action-btn quitar-franco" onclick="quitarFranco('${autoKey}','${col}','${ds}',this)">✕ Quitar franco</button>`;
+      let actHtml="";
+      if(estado==="franco") {
+        actHtml=`<button class="action-btn ab-quitar" onclick="doFranco('${aid}','${cid}','${ds}','quitar',this)">✕ Quitar franco</button>`;
       } else {
-        actionsHtml = `
+        actHtml=`
           <div class="action-grid">
-            <button class="action-btn primary" onclick="marcarCompleto('${autoKey}','${col}','${ds}',this)">✓ Turno completo</button>
-            <button class="action-btn franco-btn" onclick="marcarFranco('${autoKey}','${col}','${ds}',this)">F Franco</button>
+            <button class="action-btn ab-primary" onclick="doTurno('${aid}','${cid}','${ds}',null,this)">✓ Turno completo</button>
+            <button class="action-btn ab-franco" onclick="doFranco('${aid}','${cid}','${ds}','marcar',this)">F Franco</button>
           </div>
           <div class="monto-row">
-            <input class="monto-input" type="number" inputmode="numeric" id="monto_${autoKey}_${col}" placeholder="Otro monto...">
-            <button class="monto-btn" onclick="marcarMonto('${autoKey}','${col}','${ds}',this)">OK</button>
+            <input class="monto-input" type="number" inputmode="numeric" id="m_${aid}_${cid}" placeholder="Otro monto...">
+            <button class="monto-btn" onclick="doMontoCustom('${aid}','${cid}','${ds}',this)">OK</button>
           </div>`;
       }
 
-      sectionsHtml += `
-        <div class="chofer-section">
-          <div class="chofer-section-header">
-            <div>
-              <div class="chofer-section-name">${nombre}</div>
-              <div style="font-size:11px;color:var(--muted);margin-top:2px">${autoData.nombre}</div>
-            </div>
-            <span class="estado-badge ${badgeClass}">${estadoLabel}</span>
-          </div>
-          ${valorActual ? `<div class="modal-valor-actual">${valorActual}</div>` : ""}
-          ${actionsHtml}
-        </div>`;
+      sectionsHtml+=`<div class="chofer-section">
+        <div class="chofer-sec-header">
+          <div><div class="chofer-sec-name">${cnombre}</div><div class="chofer-sec-sub">${adata.nombre}</div></div>
+          <span class="eb ${badgeClass}">${estadoLabel}</span>
+        </div>
+        ${valorStr?`<div style="font-family:'DM Mono',monospace;font-size:11px;color:var(--muted);margin-bottom:10px">${valorStr}</div>`:""}
+        ${actHtml}
+      </div>`;
     }
   }
 
-  modal.innerHTML = `
-    <div class="modal-sheet">
-      <div class="modal-date">${nombreDia}</div>
-      <div class="modal-title">${d} de ${MESES[m-1]}</div>
-      ${sectionsHtml}
-      <button class="modal-close" onclick="this.closest('.modal-overlay').remove()">Cerrar</button>
-    </div>`;
-
-  modal.onclick = e => { if(e.target===modal) modal.remove(); };
+  modal.innerHTML=`<div class="modal-sheet">
+    <div class="modal-date">${DIAS_FULL[(new Date(y,m-1,d).getDay()+6)%7]}</div>
+    <div class="modal-title">${d} de ${MESES[m-1]}</div>
+    ${sectionsHtml}
+    <button class="modal-close" onclick="this.closest('.modal-overlay').remove()">Cerrar</button>
+  </div>`;
+  modal.onclick=e=>{if(e.target===modal)modal.remove();};
   document.body.appendChild(modal);
 }
 
-async function marcarCompleto(autoKey, col, ds, btn) {
+async function doTurno(autoId, choferId, ds, monto, btn) {
+  const cfg=cachedResumen?.config||{};
+  const turnoBase=cfg.turno_base||50000;
+  const montoFinal=monto||turnoBase;
   btn.disabled=true; btn.textContent="...";
   try {
-    const res = await apiFetch("/turno",{method:"POST",body:JSON.stringify({auto:autoKey,col,valor:50,fecha:ds})});
-    if(res.ok){ showToast("✓ "+res.mensaje,"success"); btn.closest(".modal-overlay").remove(); await loadCal(); renderCalendario(); }
-    else { showToast("⚠ "+(res.error||"Error"),"error"); btn.disabled=false; btn.textContent="✓ Turno completo"; }
-  } catch(e){ showToast("⚠ Error","error"); btn.disabled=false; btn.textContent="✓ Turno completo"; }
+    const res=await apiFetch("/turno",{method:"POST",body:JSON.stringify({auto_id:autoId,chofer_id:choferId,monto:montoFinal,fecha:ds})});
+    if(res.ok){showToast("✓ "+res.mensaje,"success");btn.closest(".modal-overlay").remove();await loadAll();}
+    else{showToast("⚠ "+(res.error||"Error"),"error");btn.disabled=false;btn.textContent="✓ Turno completo";}
+  } catch(e){showToast("⚠ Error","error");btn.disabled=false;btn.textContent="✓ Turno completo";}
 }
 
-async function marcarMonto(autoKey, col, ds, btn) {
-  const input = document.getElementById(`monto_${autoKey}_${col}`);
-  const val = parseFloat(input?.value);
-  if (!val||val<=0){ showToast("Ingresá un monto válido","error"); return; }
+async function doMontoCustom(autoId, choferId, ds, btn) {
+  const input=document.getElementById("m_"+autoId+"_"+choferId);
+  const val=parseFloat(input?.value);
+  if(!val||val<=0){showToast("Ingresá un monto válido","error");return;}
   btn.disabled=true; btn.textContent="...";
   try {
-    const res = await apiFetch("/turno",{method:"POST",body:JSON.stringify({auto:autoKey,col,valor:val,fecha:ds})});
-    if(res.ok){ showToast("✓ "+res.mensaje,"success"); btn.closest(".modal-overlay").remove(); await loadCal(); renderCalendario(); }
-    else { showToast("⚠ "+(res.error||"Error"),"error"); btn.disabled=false; btn.textContent="OK"; }
-  } catch(e){ showToast("⚠ Error","error"); btn.disabled=false; btn.textContent="OK"; }
+    const res=await apiFetch("/turno",{method:"POST",body:JSON.stringify({auto_id:autoId,chofer_id:choferId,monto:val,fecha:ds})});
+    if(res.ok){showToast("✓ "+res.mensaje,"success");btn.closest(".modal-overlay").remove();await loadAll();}
+    else{showToast("⚠ "+(res.error||"Error"),"error");btn.disabled=false;btn.textContent="OK";}
+  } catch(e){showToast("⚠ Error","error");btn.disabled=false;btn.textContent="OK";}
 }
 
-async function marcarFranco(autoKey, col, ds, btn) {
+async function doFranco(autoId, choferId, ds, accion, btn) {
   btn.disabled=true; btn.textContent="...";
   try {
-    const res = await apiFetch("/franco",{method:"POST",body:JSON.stringify({auto:autoKey,col,fecha:ds,accion:"marcar"})});
-    if(res.ok){ showToast("✓ "+res.mensaje,"success"); btn.closest(".modal-overlay").remove(); await loadCal(); renderCalendario(); }
-    else { showToast("⚠ "+(res.error||"Error"),"error"); btn.disabled=false; btn.textContent="F Franco"; }
-  } catch(e){ showToast("⚠ Error","error"); btn.disabled=false; btn.textContent="F Franco"; }
-}
-
-async function quitarFranco(autoKey, col, ds, btn) {
-  btn.disabled=true; btn.textContent="...";
-  try {
-    const res = await apiFetch("/franco",{method:"POST",body:JSON.stringify({auto:autoKey,col,fecha:ds,accion:"quitar"})});
-    if(res.ok){ showToast("✓ "+res.mensaje,"success"); btn.closest(".modal-overlay").remove(); await loadCal(); renderCalendario(); }
-    else { showToast("⚠ "+(res.error||"Error"),"error"); btn.disabled=false; btn.textContent="✕ Quitar franco"; }
-  } catch(e){ showToast("⚠ Error","error"); btn.disabled=false; btn.textContent="✕ Quitar franco"; }
+    const res=await apiFetch("/franco",{method:"POST",body:JSON.stringify({chofer_id:choferId,fecha:ds,accion,auto_id:autoId})});
+    if(res.ok){showToast("✓ "+res.mensaje,"success");btn.closest(".modal-overlay").remove();await loadAll();}
+    else{showToast("⚠ "+(res.error||"Error"),"error");btn.disabled=false;btn.textContent=accion==="marcar"?"F Franco":"✕ Quitar franco";}
+  } catch(e){showToast("⚠ Error","error");btn.disabled=false;}
 }
 
 // ── GASTOS ─────────────────────────────────────────────────────────────────────
-let gastoTab="lista", selectedAuto="negro";
+let gastoTab="lista", selectedAutoId="negro";
 
 async function renderGastosPage() {
-  const el = document.getElementById("page-gastos");
-  el.innerHTML=`
-    <div class="tabs">
-      <button class="tab ${gastoTab==="lista"?"active":""}" onclick="switchGastoTab('lista',this)">Ver gastos</button>
-      <button class="tab ${gastoTab==="nuevo"?"active":""}" onclick="switchGastoTab('nuevo',this)">+ Agregar</button>
-    </div>
-    <div id="gastoContent"></div>`;
-  if(gastoTab==="lista") renderGastoLista();
-  else renderGastoForm();
+  const el=document.getElementById("page-gastos");
+  el.innerHTML=`<div class="tabs">
+    <button class="tab ${gastoTab==="lista"?"active":""}" onclick="switchGastoTab('lista',this)">Ver gastos</button>
+    <button class="tab ${gastoTab==="nuevo"?"active":""}" onclick="switchGastoTab('nuevo',this)">+ Agregar</button>
+  </div><div id="gastoContent"></div>`;
+  gastoTab==="lista"?renderGastoLista():renderGastoForm();
 }
 
 function switchGastoTab(tab,btn) {
   gastoTab=tab;
   document.querySelectorAll(".tabs .tab").forEach(b=>b.classList.remove("active"));
   btn.classList.add("active");
-  if(tab==="lista") renderGastoLista();
-  else renderGastoForm();
+  gastoTab==="lista"?renderGastoLista():renderGastoForm();
 }
 
 async function renderGastoLista() {
   const el=document.getElementById("gastoContent");
   el.innerHTML=`<div class="loading"><div class="spinner"></div></div>`;
   try {
-    const [negro,blanco]=await Promise.all([apiFetch("/gastos?auto=negro"),apiFetch("/gastos?auto=blanco")]);
-    const all=[
-      ...(negro.gastos||[]).map(g=>({...g,autoNombre:"Prisma Negro"})),
-      ...(blanco.gastos||[]).map(g=>({...g,autoNombre:"Prisma Blanco"})),
-    ].reverse();
-    if(!all.length){el.innerHTML=`<div class="loading">Sin gastos registrados</div>`;return;}
-    el.innerHTML=all.map(g=>`
+    const data=await apiFetch("/gastos");
+    const gastos=data.gastos||[];
+    if(!gastos.length){el.innerHTML=`<div class="loading">Sin gastos registrados</div>`;return;}
+    el.innerHTML=gastos.map(g=>`
       <div class="gasto-item">
-        <div><div class="gasto-desc">${g.descripcion}</div><div class="gasto-auto">${g.autoNombre}</div></div>
-        <div class="gasto-monto">${g.monto||"—"}</div>
+        <div><div class="gasto-desc">${g.descripcion}</div><div class="gasto-auto">${g.auto_nombre} · ${g.fecha}</div></div>
+        <div class="gasto-monto">${fmt(parseFloat(g.monto)||0)}</div>
       </div>`).join("");
   } catch(e){el.innerHTML=`<div class="loading">⚠️ Error</div>`;}
 }
 
 function renderGastoForm() {
   const el=document.getElementById("gastoContent");
+  const cfg=cachedResumen?.config||{};
+  const autos=Object.entries(cfg.autos||{"negro":"Prisma Negro","blanco":"Prisma Blanco"});
+  const categorias=["mantenimiento","combustible","seguro","impuesto","multa","otro"];
+
   el.innerHTML=`
     <div class="stitle">Auto</div>
     <div class="radio-group" id="autoSel" style="margin-bottom:12px">
-      <div class="radio-opt ${selectedAuto==="negro"?"sel":""}" onclick="selectAuto('negro',this)">
-        <div class="rl">Prisma Negro</div><div class="rs">Oscar · Luis</div>
-      </div>
-      <div class="radio-opt ${selectedAuto==="blanco"?"sel":""}" onclick="selectAuto('blanco',this)">
-        <div class="rl">Prisma Blanco</div><div class="rs">Maxi · Javier</div>
-      </div>
+      ${autos.map(([aid,anombre])=>`
+        <div class="radio-opt ${selectedAutoId===aid?"sel":""}" onclick="selectAutoGasto('${aid}',this)">
+          <div class="rl">${anombre}</div>
+        </div>`).join("")}
     </div>
     <div class="stitle">Descripción</div>
     <div class="form-group"><input class="form-input" id="gastoDesc" type="text" placeholder="Ej: Aceite y filtros" autocomplete="off"></div>
     <div class="stitle">Monto</div>
     <div class="form-group"><input class="form-input" id="gastoMonto" type="number" inputmode="numeric" placeholder="0" style="font-family:'DM Mono',monospace"></div>
+    <div class="stitle">Categoría</div>
+    <div class="form-group">
+      <select class="form-input" id="gastoCat">
+        ${categorias.map(c=>`<option value="${c}">${c.charAt(0).toUpperCase()+c.slice(1)}</option>`).join("")}
+      </select>
+    </div>
     <button class="btn-primary" onclick="submitGasto()">REGISTRAR GASTO</button>`;
 }
 
-function selectAuto(auto,el) {
-  selectedAuto=auto;
+function selectAutoGasto(aid,el) {
+  selectedAutoId=aid;
   document.querySelectorAll("#autoSel .radio-opt").forEach(o=>o.classList.remove("sel"));
   el.classList.add("sel");
 }
@@ -668,9 +566,10 @@ function selectAuto(auto,el) {
 async function submitGasto() {
   const desc=document.getElementById("gastoDesc").value.trim();
   const monto=parseFloat(document.getElementById("gastoMonto").value);
+  const cat=document.getElementById("gastoCat").value;
   if(!desc||isNaN(monto)||monto<=0){showToast("Completá descripción y monto","error");return;}
   try {
-    const res=await apiFetch("/gasto",{method:"POST",body:JSON.stringify({auto:selectedAuto,descripcion:desc,monto})});
+    const res=await apiFetch("/gasto",{method:"POST",body:JSON.stringify({auto_id:selectedAutoId,descripcion:desc,monto,categoria:cat})});
     if(res.ok){
       showToast("✓ "+res.mensaje,"success");
       document.getElementById("gastoDesc").value="";
@@ -679,7 +578,6 @@ async function submitGasto() {
   } catch(e){showToast("⚠ Error","error");}
 }
 
-// ── INIT ───────────────────────────────────────────────────────────────────────
 loadAll();
 </script>
 </body>
